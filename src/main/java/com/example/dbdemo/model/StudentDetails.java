@@ -27,6 +27,7 @@ public class StudentDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender; // enum
     private String aadharNumber;
+    private boolean isActive;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")

@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Gradle Wrapper
+gradle/wrapper
+
+#Application Properties
+src/main/resources/application.properties
