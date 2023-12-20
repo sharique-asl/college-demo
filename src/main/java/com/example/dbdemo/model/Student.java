@@ -3,24 +3,22 @@ package com.example.dbdemo.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Data
-@Table(name="student")
+@Table(name = "student")
 public class Student {
 
-    //    @GenericGenerator()
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE) // because we want a sequential number for the Ids
     private Long id;
 
-    private String studentName;
-    private String studentClass;
-    private String rollNumber;
-    // which course taken
-    // when joined
-
+    private int rollNumber;
+    private String courseId;
+    private Date courseJoinDate;
 
     @OneToOne
-    @JoinColumn(name = "student_details_id")
+    @JoinColumn(referencedColumnName = "id")
     private StudentDetails studentDetails;
 }
