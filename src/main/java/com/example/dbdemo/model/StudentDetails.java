@@ -29,9 +29,7 @@ public class StudentDetails {
     private String aadharNumber;
     private boolean isActive;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "id")
-    private Student student;
+
 }
 // run the application and check if its running & table are being created or not.
 // find how to generate your custom ID generators example => SC-PH, SC-CH, SC-BIO, SC-MBIO

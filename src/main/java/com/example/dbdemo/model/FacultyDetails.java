@@ -28,9 +28,4 @@ public class FacultyDetails {
     private String panNumber;
     private boolean isActive;
     private Date dateOfJoining;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "id")
-    private Faculty faculty;
-
 }
