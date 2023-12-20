@@ -29,4 +29,9 @@ public class FacultyDetails {
     private boolean isActive;
     private Date dateOfJoining;
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 }

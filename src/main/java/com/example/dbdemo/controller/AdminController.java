@@ -229,3 +229,7 @@ public class AdminController {
     }
 
 }
+//get all for student course department faculty
+//get studentDetails course facultyDetails Department based on ids
+
+//update for student course department faculty - partial and full

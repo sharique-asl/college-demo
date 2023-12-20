@@ -13,6 +13,6 @@ public class Department {
     private Long departmentId;
 
     private String departmentName;
-
+//add hod,contact person
 
 }

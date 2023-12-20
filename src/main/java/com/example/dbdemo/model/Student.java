@@ -18,7 +18,4 @@ public class Student {
     private String courseId;
     private Date courseJoinDate;
 
-    @OneToOne
-    @JoinColumn(referencedColumnName = "id")
-    private StudentDetails studentDetails;
 }
