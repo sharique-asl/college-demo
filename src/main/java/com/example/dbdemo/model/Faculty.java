@@ -20,7 +20,7 @@ public class Faculty {
 
 <<<<<<< Updated upstream
     @OneToOne
-    @JoinColumn(name = "faculty_details_id")
+    @JoinColumn(referencedColumnName = "id")
     private FacultyDetails facultyDetails;
 =======
 

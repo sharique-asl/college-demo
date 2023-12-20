@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name="faculty_details")
+@Table(name = "faculty_details")
 public class FacultyDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -28,10 +28,4 @@ public class FacultyDetails {
     private String panNumber;
     private boolean isActive;
     private Date dateOfJoining;
-
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
 }

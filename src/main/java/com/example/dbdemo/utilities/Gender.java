@@ -1,4 +1,5 @@
 package com.example.dbdemo.utilities;
 
-public interface Gender {
+public enum Gender {
+    MALE, FEMALE, TRANSGENDER
 }
