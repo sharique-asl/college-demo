@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name="faculty_details")
+@Table(name = "faculty_details")
 public class FacultyDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -27,5 +27,9 @@ public class FacultyDetails {
     private String aadharNumber;
     private String panNumber;
     private Date dateOfJoining;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "id")
+    private Faculty faculty;
 
 }

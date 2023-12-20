@@ -19,7 +19,7 @@ public class Faculty {
     // 4 courses present, phy, chem, bio, micro-bio
 
     @OneToOne
-    @JoinColumn(name = "faculty_details_id")
+    @JoinColumn(referencedColumnName = "id")
     private FacultyDetails facultyDetails;
 }
 
