@@ -26,6 +26,7 @@ public class FacultyDetails {
     private Gender gender; // enum
     private String aadharNumber;
     private String panNumber;
+    private boolean isActive;
     private Date dateOfJoining;
 
 }
