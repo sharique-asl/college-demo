@@ -40,6 +40,7 @@ public class AdminController {
 //        return ResponseEntity.ok(createdStudent);
 //    }
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        //
         Student createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
@@ -106,6 +107,7 @@ public class AdminController {
 
     @PostMapping("/studentDetails")
     public ResponseEntity<StudentDetails> createStudentDetails(@RequestBody StudentDetails studentDetails) {
+        //
         StudentDetails createdStudentDetails = studentDetailsService.createStudentDetails(studentDetails);
         return new ResponseEntity<>(createdStudentDetails, HttpStatus.CREATED);
     }

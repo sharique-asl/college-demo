@@ -1,5 +1,6 @@
 package com.example.dbdemo.model;
 
+import com.example.dbdemo.utilities.Gender;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,11 +21,9 @@ public class FacultyDetails {
     // back up can be for pg or local guardian if the student is older
     private String maritalStatus;
     private String dateOfBirth;
-    public enum Gender {
-        MALE, FEMALE, TRANSGENDER
-    }
+
     @Enumerated(EnumType.STRING)
-    private StudentDetails.Gender gender; // enum
+    private Gender gender; // enum
     private String aadharNumber;
     private String panNumber;
     private Date dateOfJoining;
