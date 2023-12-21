@@ -24,6 +24,11 @@ public class StudentDetailsImpl implements StudentDetailsService {
     }
 
     @Override
+    public List<StudentDetails> getStudentDetailsByIds(List<Long> ids) {
+        return studentDetailsRepository.findAllById(ids);
+    }
+
+    @Override
     public StudentDetails createStudentDetails(StudentDetails studentDetails) {
         return studentDetailsRepository.save(studentDetails);
     }
@@ -41,7 +46,16 @@ public class StudentDetailsImpl implements StudentDetailsService {
     }
 
     @Override
-    public void deleteStudentDetails(Long id) {
-        studentDetailsRepository.deleteById(id);
+    public Boolean deleteStudentDetails(Long id) {
+//        studentDetailsRepository.deleteById(id);
+        StudentDetails obj = this.getStudentDetailsById(id);
+        if (obj==null)
+            return false;
+        else {
+            if(obj.isActive())
+                return true;
+            obj.setActive(false);
+            return this.updateStudentDetails(id, obj) != null;
+        }
     }
 }
