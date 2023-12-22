@@ -29,7 +29,7 @@ public class StudentController {
         Student student = studentService.getStudentById(id);
         return student != null ? ResponseEntity.ok(student) : ResponseEntity.notFound().build();
     }
-
+//change requestParam , not getMapping , diff bw getMapping & PostMapping
     @GetMapping("/students/ids")
     public ResponseEntity<List<Student>> getStudentsByIds(@RequestParam List<Long> ids) {
         List<Student> students = studentService.getStudentsByIds(ids);
@@ -37,10 +37,6 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-//    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-//        Student createdStudent = studentService.createStudent(student);
-//        return ResponseEntity.ok(createdStudent);
-//    }
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         Student createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
