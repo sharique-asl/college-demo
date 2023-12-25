@@ -22,7 +22,11 @@ public class Faculty {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToMany(mappedBy = "faculty")
+    @ManyToMany
+    @JoinTable(
+            name = "faculty_course",
+            joinColumns = @JoinColumn(name = "faculty_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<Course> courses;
 }
 
