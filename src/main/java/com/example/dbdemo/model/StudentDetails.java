@@ -27,10 +27,11 @@ public class StudentDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender; // enum
     private String aadharNumber;
-    private boolean isActive;
+    private boolean isActive = true;
 
 
 }
+//mandatory fields -> should not be empty, aadhar-12 digits, contact-10 digits, name,aadhar,contact - no speecail chars
 // run the application and check if its running & table are being created or not.
 // find how to generate your custom ID generators example => SC-PH, SC-CH, SC-BIO, SC-MBIO
 // who adds what. Department -> admin, Courses -> admin, Faculty -> Admin, Student -> Admin

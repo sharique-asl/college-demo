@@ -23,3 +23,4 @@ public class Department {
     private Set<Faculty> faculty;
 
 }
+//departmentName , hod - mandatory , not null -> no special

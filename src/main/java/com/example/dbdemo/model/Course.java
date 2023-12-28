@@ -26,3 +26,4 @@ public class Course {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 }
+//coursename,department -mandatory , not null -> no special ->
