@@ -16,11 +16,11 @@ public class Department {
     private String departmentName;
     private String hod;
 
-    @OneToMany(mappedBy = "department")
-    private Set<Course> courses;
+//    @OneToMany(mappedBy = "department")
+//    private Set<Course> courses;
 
-    @OneToMany(mappedBy = "department")
-    private Set<Faculty> faculty;
+//    @OneToMany(mappedBy = "department")
+//    private Set<Faculty> faculty;
 
 }
 //departmentName , hod - mandatory , not null -> no special

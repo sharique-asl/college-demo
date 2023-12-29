@@ -63,10 +63,7 @@ public class Faculty {
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "PAN should be alphanumeric with no special characters.")
     @Size(min = 10, max = 10, message = "PAN should be 10 characters.")
     private String pan;
-    public void setPan(String pan) {
-        // Convert PAN to uppercase before setting it
-        this.pan = (pan != null) ? pan.toUpperCase() : null;
-    }
+
     private String maritalStatus;
 
     @PastOrPresent(message = "Date of joining should be in the past or present.")
@@ -79,12 +76,12 @@ public class Faculty {
 //    @JoinColumn(name = "faculty_details_id", referencedColumnName = "id")
 //    private FacultyDetails facultyDetails;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
+//    @ManyToOne
+//    @JoinColumn(name = "department_id")
+//    private Department department;
 
-    @OneToMany(mappedBy = "faculty")
-    private Set<Course> courses;
+//    @OneToMany(mappedBy = "faculty")
+//    private Set<Course> courses;
 }
 
 //no trackability for changes in db

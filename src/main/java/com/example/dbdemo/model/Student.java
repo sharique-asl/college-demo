@@ -5,13 +5,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import jakarta.validation.constraints.*;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "student")
-public class Student {
+public class Student implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -71,17 +73,13 @@ public class Student {
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "PAN should be alphanumeric with no special characters.")
     @Size(min = 10, max = 10, message = "PAN should be 10 characters.")
     private String pan;
-    public void setPan(String pan) {
-        // Convert PAN to uppercase before setting it
-        this.pan = (pan != null) ? pan.toUpperCase() : null;
-    }
     private boolean isActive = true;
 
-    @ManyToMany
-    @JoinTable(
-            name = "student_course",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Course> courses;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "student_course",
+//            joinColumns = @JoinColumn(name = "student_id"),
+//            inverseJoinColumns = @JoinColumn(name = "course_id"))
+//    private Set<Course> courses;
 
 }

@@ -5,6 +5,7 @@ import com.example.dbdemo.model.StudentDetails;
 import com.example.dbdemo.service.StudentDetailsService;
 import com.example.dbdemo.service.StudentService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@Slf4j
 public class StudentController {
     // Student CRUD operations
     @Autowired
@@ -27,7 +29,10 @@ public class StudentController {
 
     @GetMapping("/students/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+
         Student student = studentService.getStudentById(id);
+        log.info(student.toString());
+
         return student != null ? ResponseEntity.ok(student) : ResponseEntity.notFound().build();
     }
 //change requestParam , not getMapping , diff bw getMapping & PostMapping
