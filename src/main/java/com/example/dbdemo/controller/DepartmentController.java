@@ -29,8 +29,8 @@ public class DepartmentController {
     }
 
     @GetMapping("/ids")
-    public ResponseEntity<List<Department>> getDepartmentsByIds(@RequestParam List<Long> ids) {
-        List<Department> departments = departmentService.getDepartmentsByIds(ids);
+    public ResponseEntity<List<Department>> getDepartmentsByIds(@RequestParam List<Long> id) {
+        List<Department> departments = departmentService.getDepartmentsByIds(id);
         return ResponseEntity.ok(departments);
     }
 

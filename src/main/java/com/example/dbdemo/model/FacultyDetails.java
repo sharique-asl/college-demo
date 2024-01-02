@@ -26,6 +26,9 @@ public class FacultyDetails {
     private Gender gender; // enum
     private String aadharNumber;
     private String panNumber;
-    private boolean isActive;
+    private boolean isActive = true;
     private Date dateOfJoining;
 }
+//all mandatory fields -> should not be empty, aadhar-12 digits, contact-10 digits, name,aadhar,contact - no speecail chars, pan - alpha numeric no special chars length-10
+// for pan change small to capital
+//dateOfJoining - current date at inserion

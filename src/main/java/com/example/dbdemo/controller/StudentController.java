@@ -4,6 +4,8 @@ import com.example.dbdemo.model.Student;
 import com.example.dbdemo.model.StudentDetails;
 import com.example.dbdemo.service.StudentDetailsService;
 import com.example.dbdemo.service.StudentService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@Slf4j
 public class StudentController {
     // Student CRUD operations
     @Autowired
@@ -26,18 +29,21 @@ public class StudentController {
 
     @GetMapping("/students/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+
         Student student = studentService.getStudentById(id);
+        log.info(student.toString());
+
         return student != null ? ResponseEntity.ok(student) : ResponseEntity.notFound().build();
     }
 //change requestParam , not getMapping , diff bw getMapping & PostMapping
     @GetMapping("/students/ids")
-    public ResponseEntity<List<Student>> getStudentsByIds(@RequestParam List<Long> ids) {
-        List<Student> students = studentService.getStudentsByIds(ids);
+    public ResponseEntity<List<Student>> getStudentsByIds(@RequestParam List<Long> id) {
+        List<Student> students = studentService.getStudentsByIds(id);
         return ResponseEntity.ok(students);
     }
 
     @PostMapping("/students")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+    public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
         Student createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
@@ -68,8 +74,8 @@ public class StudentController {
     }
 
     @GetMapping("/studentDetails/ids")
-    public ResponseEntity<List<StudentDetails>> getStudentDetailsByIds(@RequestParam List<Long> ids) {
-        List<StudentDetails> studentDetailsList = studentDetailsService.getStudentDetailsByIds(ids);
+    public ResponseEntity<List<StudentDetails>> getStudentDetailsByIds(@RequestParam List<Long> id) {
+        List<StudentDetails> studentDetailsList = studentDetailsService.getStudentDetailsByIds(id);
         return ResponseEntity.ok(studentDetailsList);
     }
 

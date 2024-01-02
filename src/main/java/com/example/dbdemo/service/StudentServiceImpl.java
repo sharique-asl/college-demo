@@ -2,10 +2,13 @@ package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -13,12 +16,15 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+
     @Override
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
     @Override
+    @Cacheable(value = "student", key = "#id")
+//    @Transactional
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);
     }
@@ -50,3 +56,8 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteById(id);
     }
 }
+/*
+* instead of downloading and installing, install docker desktop and then run
+* > docker pull redis
+* docker run --name redis-cache -p 6379:6379 -d redis:7.2.3
+* */
