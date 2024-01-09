@@ -1,0 +1,16 @@
+{	
+  "rollNumber": 123456,
+  "name": "John Doe",
+  "fatherName": "John Doe Sr.",
+  "motherName": "Jane Doe",
+  "contactNumber": "9876543210",
+  "backupContactNumber": "8765432109",
+  "fatherContactNumber": "7654321098",
+  "dateOfBirth": "1990-05-15",
+  "email": "john.doe@example.com",
+  "gender": "MALE",
+  "aadharNumber": "123456789012",
+  "pan": "ABCDE1234F",
+  "isActive": true
+}
+

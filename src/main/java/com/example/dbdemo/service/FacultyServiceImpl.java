@@ -1,7 +1,11 @@
 package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Faculty;
+import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.FacultyRepository;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +23,21 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty getFacultyById(Long id) {
-        return facultyRepository.findById(id).orElse(null);
+    public List<Faculty> getFacultiesByIds(@NotNull List<Long> ids) {
+
+        if (ids.isEmpty())
+            return facultyRepository.findAll();
+
+        return facultyRepository.findAllById(ids);
     }
 
     @Override
-    public Faculty createFaculty(Faculty faculty) {
+    public Faculty createFaculty(@Valid Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 
     @Override
-    public Faculty updateFaculty(Long id, Faculty faculty) {
+    public Faculty updateFaculty(@NotNull @Min(1) Long id, @Valid Faculty faculty) {
         if (facultyRepository.existsById(id)) {
             faculty.setId(id);
             return facultyRepository.save(faculty);
@@ -40,7 +48,7 @@ public class FacultyServiceImpl implements FacultyService {
         }
     }
 
-    public void deleteFaculty(Long id) {
+    public void deleteFaculty(@NotNull @Min(1) Long id) {
         facultyRepository.deleteById(id);
     }
 }

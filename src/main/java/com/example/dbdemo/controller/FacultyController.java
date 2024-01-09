@@ -19,11 +19,11 @@ public class FacultyController {
         return ResponseEntity.ok(faculties);
     }
 
-    @GetMapping("/faculties/{id}")
-    public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
-        Faculty faculty = facultyService.getFacultyById(id);
-        return faculty != null ? ResponseEntity.ok(faculty) : ResponseEntity.notFound().build();
-    }
+//    @GetMapping("/faculties/{id}")
+//    public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
+//        Faculty faculty = facultyService.getFacultyById(id);
+//        return faculty != null ? ResponseEntity.ok(faculty) : ResponseEntity.notFound().build();
+//    }
 
     @PostMapping("/faculties")
     public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
