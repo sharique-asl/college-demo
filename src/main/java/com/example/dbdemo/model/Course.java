@@ -1,6 +1,9 @@
 package com.example.dbdemo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +17,11 @@ public class Course  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long courseId;
+
+
+    @NotBlank(message = "Course Name should not be null or empty")
+    @Size(max = 10, message = "Course Name should not exceed 10 characters.")
+    @Pattern(regexp = "^[0-9a-zA-Z ]*$", message = "Course Name should contain only letters and digits.")
     private String courseName;
 
 //    @ManyToOne
