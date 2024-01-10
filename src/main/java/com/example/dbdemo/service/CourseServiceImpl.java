@@ -1,6 +1,7 @@
 package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Course;
+import com.example.dbdemo.model.Department;
 import com.example.dbdemo.repository.CourseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -22,7 +23,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesById(@NotNull List<Long> ids) {
+    public List<Course> getCoursesByIds(@NotNull List<Long> ids) {
         if (ids.isEmpty())
             return courseRepository.findAll();
 

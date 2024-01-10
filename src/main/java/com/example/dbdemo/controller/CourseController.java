@@ -22,12 +22,17 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-        Course course = courseService.getCourseById(id);
-        return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
+//        Course course = courseService.getCourseById(id);
+//        return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
+//    }
 
+    @GetMapping("/ids")
+    public ResponseEntity<List<Course>> getCoursesByIds(@RequestParam List<Long> id) {
+        List<Course>  courses = courseService.getCoursesByIds(id);
+        return ResponseEntity.ok(courses);
+    }
     @PostMapping
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         Course createdCourse = courseService.createCourse(course);

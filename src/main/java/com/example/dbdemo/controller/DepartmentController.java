@@ -22,11 +22,11 @@ public class DepartmentController {
         return ResponseEntity.ok(departments);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
-        Department department = departmentService.getDepartmentById(id);
-        return department != null ? ResponseEntity.ok(department) : ResponseEntity.notFound().build();
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
+//        Department department = departmentService.getDepartmentById(id);
+//        return department != null ? ResponseEntity.ok(department) : ResponseEntity.notFound().build();
+//    }
 
     @GetMapping("/ids")
     public ResponseEntity<List<Department>> getDepartmentsByIds(@RequestParam List<Long> id) {

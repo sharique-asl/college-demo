@@ -28,7 +28,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudentsByIds(@NotNull List<Long> ids) {
-
         if (ids.isEmpty())
             return studentRepository.findAll();
 
@@ -54,7 +53,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(@NotNull @Min(1) Long id) {
-        studentRepository.deleteById(id);
+        Student student = studentRepository.findById(id).orElse(null);
+        if(student!=null){
+            student.setActive(false);
+            studentRepository.save(student);
+        }
+
+//        studentRepository.deleteById(id);
     }
 }
 /*
@@ -62,3 +67,4 @@ public class StudentServiceImpl implements StudentService {
 * > docker pull redis
 * docker run --name redis-cache -p 6379:6379 -d redis:7.2.3
 * */
+//soft delete , fetch only active

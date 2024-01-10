@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @Slf4j
 public class StudentController {
@@ -37,6 +39,8 @@ public class StudentController {
     @GetMapping("/students/ids")
     public ResponseEntity<List<Student>> getStudentsByIds(@RequestParam List<Long> id) {
         List<Student> students = studentService.getStudentsByIds(id);
+        students = students.stream().filter(stud -> stud.isActive())
+                .collect(Collectors.toList());
         return ResponseEntity.ok(students);
     }
 
