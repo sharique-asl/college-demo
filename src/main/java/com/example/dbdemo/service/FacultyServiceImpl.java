@@ -49,6 +49,11 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     public void deleteFaculty(@NotNull @Min(1) Long id) {
-        facultyRepository.deleteById(id);
+        Faculty faculty = facultyRepository.findById(id).orElse(null);
+        if(faculty!=null){
+            faculty.setActive(false);
+            facultyRepository.save(faculty);
+        }
+//        facultyRepository.deleteById(id);
     }
 }

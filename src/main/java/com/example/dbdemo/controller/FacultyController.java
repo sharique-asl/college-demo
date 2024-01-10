@@ -1,6 +1,7 @@
 package com.example.dbdemo.controller;
 
 import com.example.dbdemo.model.Faculty;
+import com.example.dbdemo.model.Student;
 import com.example.dbdemo.service.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FacultyController {
     // Faculty CRUD operations
@@ -24,6 +26,14 @@ public class FacultyController {
 //        Faculty faculty = facultyService.getFacultyById(id);
 //        return faculty != null ? ResponseEntity.ok(faculty) : ResponseEntity.notFound().build();
 //    }
+
+    @GetMapping("/faculties/ids")
+    public ResponseEntity<List<Faculty>> getFacultiesByIds(@RequestParam List<Long> id) {
+        List<Faculty> faculties = facultyService.getFacultiesByIds(id);
+        faculties = faculties.stream().filter(facu -> facu.isActive())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(faculties);
+    }
 
     @PostMapping("/faculties")
     public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
