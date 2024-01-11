@@ -1,9 +1,11 @@
 package com.example.dbdemo.controller;
 
+import com.example.dbdemo.dto.response.StudentResponseDTO;
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,12 @@ public class StudentController {
     // Student CRUD operations
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/students")
-    public ResponseEntity<List<Student>> getAllStudents() {
-        List<Student> students = studentService.getAllStudents();
+    public ResponseEntity<List<StudentResponseDTO>> getAllStudents() {
+        List<StudentResponseDTO> students = studentService.getAllStudents().stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).collect(Collectors.toList());
         return ResponseEntity.ok(students);
     }
 
