@@ -1,8 +1,11 @@
 package com.example.dbdemo.controller;
 
 import com.example.dbdemo.dto.response.StudentResponseDTO;
+import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.service.StudentService;
+import com.example.dbdemo.service.StudentServiceImpl;
+import com.example.dbdemo.utilities.Gender;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,12 +24,24 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @Autowired
+    private StudentServiceImpl studentServiceImpl;
+    @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping("/students")
-    public ResponseEntity<List<StudentResponseDTO>> getAllStudents() {
-        List<StudentResponseDTO> students = studentService.getAllStudents().stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).collect(Collectors.toList());
-        return ResponseEntity.ok(students);
+    public ResponseEntity<List<StudentResponseDTO>> getAllStudents(
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "gender", required = false) Gender gender
+    ) {
+        List<Student> students = studentService.getAllStudents();
+
+        if (name != null || gender !=null) {
+            students = studentServiceImpl.getFilteredStudents(name, gender);
+            System.out.println(students);
+        }
+
+        List<StudentResponseDTO> studentsDTO = students.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).collect(Collectors.toList());
+        return ResponseEntity.ok(studentsDTO);
     }
 
     @GetMapping("/students/ids")

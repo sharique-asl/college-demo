@@ -1,8 +1,10 @@
 package com.example.dbdemo.service;
 
+import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.StudentRepository;
 import com.example.dbdemo.utilities.FilterUtils;
+import com.example.dbdemo.utilities.Gender;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -26,6 +29,19 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAllStudents() {
         return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
     }
+    public List<Student> getFilteredStudents(String name, Gender gender) {
+        List<Student> students = studentRepository.findAll();
+
+        // Apply filtering based on conditions
+        Predicate<Student> nameFilter = student -> name == null || student.getName().contains(name);
+        Predicate<Student> genderFilter = student -> gender == null || student.getGender().equals(gender);
+        // Combine filters
+        Predicate<Student> combinedFilter = nameFilter.and(genderFilter);
+
+        // Use the utility class for filtering
+        return this.filterUtil.filterList(students, combinedFilter);
+    }
+
 
 
     @Override
