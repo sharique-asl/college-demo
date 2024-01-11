@@ -24,6 +24,9 @@ public class Course  implements Serializable {
     @Pattern(regexp = "^[0-9a-zA-Z ]*$", message = "Course Name should contain only letters and digits.")
     private String courseName;
 
+
+    private boolean isActive = true;
+
 //    @ManyToOne
 //    @JoinColumn(name = "department_id")
 //    private Department department;

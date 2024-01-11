@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 public class FacultyController {
     // Faculty CRUD operations
     @Autowired
@@ -21,17 +22,10 @@ public class FacultyController {
         return ResponseEntity.ok(faculties);
     }
 
-//    @GetMapping("/faculties/{id}")
-//    public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
-//        Faculty faculty = facultyService.getFacultyById(id);
-//        return faculty != null ? ResponseEntity.ok(faculty) : ResponseEntity.notFound().build();
-//    }
-
     @GetMapping("/faculties/ids")
     public ResponseEntity<List<Faculty>> getFacultiesByIds(@RequestParam List<Long> id) {
         List<Faculty> faculties = facultyService.getFacultiesByIds(id);
-        faculties = faculties.stream().filter(facu -> facu.isActive())
-                .collect(Collectors.toList());
+
         return ResponseEntity.ok(faculties);
     }
 
@@ -48,9 +42,11 @@ public class FacultyController {
     }
 
     @DeleteMapping("/faculties/{id}")
-    public ResponseEntity<Void> deleteFaculty(@PathVariable Long id) {
-        facultyService.deleteFaculty(id);
-        return ResponseEntity.noContent().build();
-    }
+    public ResponseEntity<String> deleteFaculty(@PathVariable Long id) {
+        Boolean status = facultyService.deleteFaculty(id);
 
+        if (status)
+            return ResponseEntity.status(200).body("Deletion successful");
+        return ResponseEntity.status(500).body("Deletion unsuccessful");
+    }
 }

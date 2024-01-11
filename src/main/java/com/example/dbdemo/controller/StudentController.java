@@ -18,8 +18,6 @@ public class StudentController {
     // Student CRUD operations
     @Autowired
     private StudentService studentService;
-    @Autowired
-//    private StudentDetailsService studentDetailsService;
 
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
@@ -27,20 +25,10 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-//    @GetMapping("/students/{id}")
-//    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-//
-//        Student student = studentService.getStudentById(id);
-//        log.info(student.toString());
-//
-//        return student != null ? ResponseEntity.ok(student) : ResponseEntity.notFound().build();
-//    }
-//change requestParam , not getMapping , diff bw getMapping & PostMapping
     @GetMapping("/students/ids")
     public ResponseEntity<List<Student>> getStudentsByIds(@RequestParam List<Long> id) {
         List<Student> students = studentService.getStudentsByIds(id);
-        students = students.stream().filter(stud -> stud.isActive())
-                .collect(Collectors.toList());
+
         return ResponseEntity.ok(students);
     }
 
@@ -56,10 +44,11 @@ public class StudentController {
     }
 
     @DeleteMapping("/students/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+        Boolean status = studentService.deleteStudent(id);
+
+        if (status)
+            return ResponseEntity.status(200).body("Deletion successful");
+        return ResponseEntity.status(500).body("Deletion unsuccessful");
     }
-
-
 }

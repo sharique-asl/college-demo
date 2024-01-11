@@ -75,11 +75,46 @@ public class Student implements Serializable {
     private String pan;
     private boolean isActive = true;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "student_course",
-//            joinColumns = @JoinColumn(name = "student_id"),
-//            inverseJoinColumns = @JoinColumn(name = "course_id"))
-//    private Set<Course> courses;
-
 }
+
+
+/*
+
+[
+  {
+    "id": 1,
+    "rollNumber": 123456,
+    "name": "Alice Brown",
+    "fatherName": "John Brown",
+    "motherName": "Mary Brown",
+    "contactNumber": "9876543210",
+    "backupContactNumber": "1234567890",
+    "fatherContactNumber": "1112233445",
+    "dateOfBirth": "1995-02-10",
+    "email": "alice.brown@example.com",
+    "gender": "FEMALE",
+    "aadharNumber": "987654321012",
+    "pan": "ABCDE1234F",
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "rollNumber": 234567,
+    "name": "Bob Johnson",
+    "fatherName": "Michael Johnson",
+    "motherName": "Laura Johnson",
+    "contactNumber": "8765432109",
+    "backupContactNumber": "3210987654",
+    "fatherContactNumber": "5544332211",
+    "dateOfBirth": "1998-05-18",
+    "email": "bob.johnson@example.com",
+    "gender": "MALE",
+    "aadharNumber": "123456789098",
+    "pan": "XYZW0987M",
+    "isActive": false
+  }
+  // Add more entries as needed
+]
+
+
+ */

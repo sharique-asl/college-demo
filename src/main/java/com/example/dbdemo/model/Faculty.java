@@ -85,3 +85,45 @@ public class Faculty {
 }
 
 //no trackability for changes in db
+
+/*
+
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "fatherName": "Michael Doe",
+    "motherName": "Emily Doe",
+    "contactNumber": "1234567890",
+    "backupContactNumber": "9876543210",
+    "dateOfBirth": "1990-01-15",
+    "email": "john.doe@example.com",
+    "gender": "MALE",
+    "aadharNumber": "123456789012",
+    "pan": "ABCDE1234F",
+    "maritalStatus": "Single",
+    "dateOfJoining": "2015-05-20",
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "fatherName": "Robert Smith",
+    "motherName": "Susan Smith",
+    "contactNumber": "9876543210",
+    "backupContactNumber": "1234567890",
+    "dateOfBirth": "1985-08-23",
+    "email": "jane.smith@example.com",
+    "gender": "FEMALE",
+    "aadharNumber": "987654321098",
+    "pan": "XYZW0987M",
+    "maritalStatus": "Married",
+    "dateOfJoining": "2018-03-10",
+    "isActive": false
+  }
+  // Add more entries as needed
+]
+
+
+
+ */

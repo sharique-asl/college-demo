@@ -27,6 +27,9 @@ public class Department {
     @Pattern(regexp = "^[a-zA-Z ]*$", message = "HOD Name should contain only letters.")
     private String hod;
 
+
+    private boolean isActive = true;
+
 //    @OneToMany(mappedBy = "department")
 //    private Set<Course> courses;
 

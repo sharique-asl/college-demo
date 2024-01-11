@@ -2,6 +2,7 @@ package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.StudentRepository;
+import com.example.dbdemo.utilities.FilterUtils;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -18,20 +19,21 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+    private FilterUtils<Student> filterUtil = new FilterUtils<>();
 
 
     @Override
     public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+        return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
     }
 
 
     @Override
     public List<Student> getStudentsByIds(@NotNull List<Long> ids) {
         if (ids.isEmpty())
-            return studentRepository.findAll();
+            return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
 
-        return studentRepository.findAllById(ids);
+        return this.filterUtil.filterList(studentRepository.findAllById(ids), Student::isActive);
     }
 
     @Override
@@ -52,14 +54,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudent(@NotNull @Min(1) Long id) {
+    public Boolean deleteStudent(@NotNull @Min(1) Long id) {
         Student student = studentRepository.findById(id).orElse(null);
         if(student!=null){
             student.setActive(false);
             studentRepository.save(student);
+            return true;
         }
-
-//        studentRepository.deleteById(id);
+        return false;
     }
 }
 /*
