@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public class StudentServiceImpl implements StudentService {
         return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
     }
 
+    public List<Student> getAllSortedStudents(String sort){
+        return this.filterUtil.filterList(studentRepository.findAll(Sort.by(sort)), Student::isActive);
+    }
     @Override
     @Cacheable(value = "student", key = "#id")
     public Student getStudentById(Long id) {

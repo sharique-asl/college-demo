@@ -31,9 +31,21 @@ public class StudentController {
     @GetMapping("/students")
     public ResponseEntity<List<StudentResponseDTO>> getAllStudents(
             @RequestParam(name = "name", required = false) String name,
-            @RequestParam(name = "gender", required = false) Gender gender
+            @RequestParam(name = "gender", required = false) Gender gender,
+            @RequestParam(name = "sort", required = false) String sort
     ) {
-        List<Student> students = studentService.getAllStudents();
+        List<Student> students = null ;
+
+        if (sort != null && !sort.isEmpty()) {
+            students = studentServiceImpl.getAllSortedStudents(sort);
+            /*
+                /students?sort=name: Get all students sorted by name.
+                /students?sort=name,desc: Get all students sorted by name in descending order.
+             */
+        }
+        else {
+            students = studentService.getAllStudents();
+        }
 
         if (name != null || gender !=null) {
             students = studentServiceImpl.getFilteredStudents(name, gender);
