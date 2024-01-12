@@ -29,16 +29,21 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAllStudents() {
         return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
     }
+
+    @Override
+    @Cacheable(value = "student", key = "#id")
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id).orElse(null);
+    }
+
     public List<Student> getFilteredStudents(String name, Gender gender) {
         List<Student> students = studentRepository.findAll();
 
-        // Apply filtering based on conditions
         Predicate<Student> nameFilter = student -> name == null || student.getName().contains(name);
         Predicate<Student> genderFilter = student -> gender == null || student.getGender().equals(gender);
-        // Combine filters
+
         Predicate<Student> combinedFilter = nameFilter.and(genderFilter);
 
-        // Use the utility class for filtering
         return this.filterUtil.filterList(students, combinedFilter);
     }
 
