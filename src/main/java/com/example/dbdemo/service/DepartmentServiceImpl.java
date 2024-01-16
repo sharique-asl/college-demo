@@ -1,9 +1,7 @@
 package com.example.dbdemo.service;
 
-import com.example.dbdemo.model.Course;
 import com.example.dbdemo.model.Department;
 import com.example.dbdemo.repository.DepartmentRepository;
-import com.example.dbdemo.utilities.FilterUtils;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -18,12 +16,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    private FilterUtils<Department> filterUtils = new FilterUtils<>();
-
     @Override
     public List<Department> getAllDepartments() {
-
         return departmentRepository.findAll();
+    }
+
+    @Override
+    public Department getDepartmentById(Long id) {
+        return departmentRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -56,8 +56,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Boolean deleteDepartment(@NotNull @Min(1) Long id) {
         Department dept = departmentRepository.findById(id).orElse(null);
         if(dept !=null){
-            dept.setActive(false);
-            departmentRepository.save(dept);
+            departmentRepository.deleteById(id);
             return true;
         }
         return false;

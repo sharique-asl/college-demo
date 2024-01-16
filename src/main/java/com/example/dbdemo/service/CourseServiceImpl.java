@@ -1,8 +1,6 @@
 package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Course;
-import com.example.dbdemo.model.Department;
-import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.CourseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -21,6 +19,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
+    }
+
+    @Override
+    public Course getCourseById(Long id) {
+        return courseRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -52,8 +55,7 @@ public class CourseServiceImpl implements CourseService {
     public Boolean deleteCourse(@NotNull @Min(1) Long id) {
         Course course = courseRepository.findById(id).orElse(null);
         if(course!=null){
-            course.setActive(false);
-            courseRepository.save(course);
+            courseRepository.deleteById(id);
             return true;
         }
         return false;

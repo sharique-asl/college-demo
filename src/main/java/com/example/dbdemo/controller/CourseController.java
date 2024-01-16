@@ -1,12 +1,14 @@
 package com.example.dbdemo.controller;
 
-import com.example.dbdemo.model.*;
-import com.example.dbdemo.service.*;
+import com.example.dbdemo.model.Course;
+import com.example.dbdemo.service.CourseService;
+import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -17,46 +19,82 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<ResponseDTOWrapper<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
-        return ResponseEntity.ok(courses);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(courses)
+                                .build()
+                );
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-//        Course course = courseService.getCourseById(id);
-//        return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDTOWrapper<Course>> getCourseById(@PathVariable Long id) {
+        Course course = courseService.getCourseById(id);
+
+        return ResponseEntity
+                .status(course != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(course != null ? Collections.singletonList(course) : null)
+                                .errorMessage(course == null ? "No course found for the corresponding ID" : null)
+                                .build()
+                );
+    }
 
     @GetMapping("/ids")
-    public ResponseEntity<List<Course>> getCoursesByIds(@RequestParam List<Long> id) {
-        List<Course>  courses = courseService.getCoursesByIds(id);
-        return ResponseEntity.ok(courses);
+    public ResponseEntity<ResponseDTOWrapper<Course>> getCoursesByIds(@RequestParam List<Long> id) {
+        List<Course> courses = courseService.getCoursesByIds(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(courses)
+                                .build()
+                );
     }
+
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+    public ResponseEntity<ResponseDTOWrapper<Course>> createCourse(@RequestBody Course course) {
         Course createdCourse = courseService.createCourse(course);
-        return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(Collections.singletonList(createdCourse))
+                                .build()
+                );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course course) {
+    public ResponseEntity<ResponseDTOWrapper<Course>> updateCourse(@PathVariable Long id, @RequestBody Course course) {
         Course updatedCourse = courseService.updateCourse(id, course);
-        return updatedCourse != null ? ResponseEntity.ok(updatedCourse) : ResponseEntity.notFound().build();
+
+        return ResponseEntity
+                .status(updatedCourse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(updatedCourse != null ? Collections.singletonList(updatedCourse) : null)
+                                .errorMessage(updatedCourse == null ? "Course to be updated not found" : null)
+                                .build()
+                );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
-        courseService.deleteCourse(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseDTOWrapper<String>> deleteCourse(@PathVariable Long id) {
+        Boolean status = courseService.deleteCourse(id);
+
+        return ResponseEntity
+                .status(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(
+                        ResponseDTOWrapper.<String>builder()
+                                .items(Collections.singletonList(status ? "Deletion successful" : "Deletion unsuccessful"))
+                                .build()
+                );
     }
-
-
 }
-//get all for student course department faculty
-//get studentDetails course facultyDetails Department based on ids
-//update for student course department faculty - partial and full
-//soft delete
-//isActive email contactNumber backupContactNumber maritalStatus - partial update (patch),full update (put) - anything else apart from id
-//dto-> request - StudentRequestDto FacultyRequestDto DepartmentRequestDto CourseRequestDto StudentUpdateDto FacultyUpdateDto DepartmentUpdateDto FacultyUpdateDto
-//dto-> response - StudentResponseDto

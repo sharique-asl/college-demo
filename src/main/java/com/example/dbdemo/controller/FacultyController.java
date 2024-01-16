@@ -1,52 +1,200 @@
 package com.example.dbdemo.controller;
 
+import com.example.dbdemo.dto.request.ResponseDTOWrapper;
+import com.example.dbdemo.dto.response.FacultyResponseDTO;
 import com.example.dbdemo.model.Faculty;
-import com.example.dbdemo.model.Student;
 import com.example.dbdemo.service.FacultyService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 public class FacultyController {
     // Faculty CRUD operations
     @Autowired
     private FacultyService facultyService;
+
     @GetMapping("/faculties")
-    public ResponseEntity<List<Faculty>> getAllFaculties() {
-        List<Faculty> faculties = facultyService.getAllFaculties();
-        return ResponseEntity.ok(faculties);
+    public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getAllFaculties() {
+        try {
+            List<Faculty> faculties = facultyService.getAllFaculties();
+
+            List<FacultyResponseDTO> facultiesDTOs = faculties
+                    .stream()
+                    .map(FacultyResponseDTO::generateFacultyResponseDTO)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
+                                    .items(facultiesDTOs)
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
+                                    .errorMessage("Fetching faculties was unsuccessful")
+                                    .build()
+                    );
+        }
+    }
+
+    @GetMapping("/faculties/{id}")
+    public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getFacultyById(@PathVariable Long id) {
+        try {
+            Faculty faculty = facultyService.getFacultyById(id);
+
+            List<FacultyResponseDTO> facultyDTOs = new ArrayList<>();
+
+            if (faculty != null) {
+                facultyDTOs.add(FacultyResponseDTO.generateFacultyResponseDTO(faculty));
+            }
+
+            return ResponseEntity
+                    .status(faculty != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                    .body(
+                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
+                                    .items(facultyDTOs)
+                                    .errorMessage(faculty == null ? "No faculty found for the corresponding ID" : null)
+                                    .build()
+                    );
+
+        } catch(Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
+                                    .errorMessage("Unable to fetch faculty using ID")
+                                    .build()
+                    );
+        }
     }
 
     @GetMapping("/faculties/ids")
-    public ResponseEntity<List<Faculty>> getFacultiesByIds(@RequestParam List<Long> id) {
-        List<Faculty> faculties = facultyService.getFacultiesByIds(id);
+    public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getFacultiesByIds(@RequestParam List<Long> id) {
+        try {
+            List<Faculty> faculties = facultyService.getFacultiesByIds(id);
 
-        return ResponseEntity.ok(faculties);
+            List<FacultyResponseDTO> facultiesDTOs = faculties
+                    .stream()
+                    .map(FacultyResponseDTO::generateFacultyResponseDTO)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
+                                    .items(facultiesDTOs)
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
+                                    .errorMessage("Unable to fetch faculties using IDs")
+                                    .build()
+                    );
+        }
     }
 
     @PostMapping("/faculties")
-    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
-        Faculty createdFaculty = facultyService.createFaculty(faculty);
-        return new ResponseEntity<>(createdFaculty, HttpStatus.CREATED);
+    public ResponseEntity<ResponseDTOWrapper<String>> createFaculty(@Valid @RequestBody Faculty faculty) {
+        try {
+            Faculty createdFaculty = facultyService.createFaculty(faculty);
+
+            FacultyResponseDTO createdFacultyDTO = FacultyResponseDTO.generateFacultyResponseDTO(createdFaculty);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .items(Collections.singletonList("Faculty created with id:" + createdFacultyDTO.getId()))
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .errorMessage("Unable to create faculty")
+                                    .build()
+                    );
+        }
     }
 
     @PutMapping("/faculties/{id}")
-    public ResponseEntity<Faculty> updateFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
-        Faculty updatedFaculty = facultyService.updateFaculty(id, faculty);
-        return updatedFaculty != null ? ResponseEntity.ok(updatedFaculty) : ResponseEntity.notFound().build();
+    public ResponseEntity<ResponseDTOWrapper<String>> updateFaculty(@PathVariable Long id, @Valid @RequestBody Faculty faculty) {
+        try {
+            Faculty updatedFaculty = facultyService.updateFaculty(id, faculty);
+
+            if (updatedFaculty == null) {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(
+                                ResponseDTOWrapper.<String>builder()
+                                        .errorMessage("Faculty to be updated not found")
+                                        .build()
+                        );
+            }
+
+            FacultyResponseDTO updatedFacultyDTO = FacultyResponseDTO.generateFacultyResponseDTO(updatedFaculty);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .items(Collections.singletonList("Faculty updated with id:" + updatedFacultyDTO.getId()))
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .errorMessage("Unable to update faculty")
+                                    .build()
+                    );
+        }
     }
 
     @DeleteMapping("/faculties/{id}")
-    public ResponseEntity<String> deleteFaculty(@PathVariable Long id) {
-        Boolean status = facultyService.deleteFaculty(id);
+    public ResponseEntity<ResponseDTOWrapper<String>> deleteFaculty(@PathVariable Long id) {
+        try {
+            Boolean status = facultyService.deleteFaculty(id);
 
-        if (status)
-            return ResponseEntity.status(200).body("Deletion successful");
-        return ResponseEntity.status(500).body("Deletion unsuccessful");
+            return ResponseEntity
+                    .status(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .items(Collections.singletonList(status ? "Deletion successful" : "Deletion unsuccessful"))
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .errorMessage("Unable to delete faculty")
+                                    .build()
+                    );
+        }
     }
 }

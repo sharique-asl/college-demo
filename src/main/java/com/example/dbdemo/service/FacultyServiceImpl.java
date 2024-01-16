@@ -1,7 +1,6 @@
 package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Faculty;
-import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.FacultyRepository;
 import com.example.dbdemo.utilities.FilterUtils;
 import jakarta.validation.Valid;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -26,11 +24,14 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public List<Faculty> getFacultiesByIds(@NotNull List<Long> ids) {
+    public Faculty getFacultyById(Long id) {
+        return facultyRepository.findById(id).orElse(null);
+    }
 
+    @Override
+    public List<Faculty> getFacultiesByIds(@NotNull List<Long> ids) {
         if (ids.isEmpty())
-            return
-            this.filterUtil.filterList(facultyRepository.findAll(), Faculty::isActive);
+            return this.filterUtil.filterList(facultyRepository.findAll(), Faculty::isActive);
 
         return this.filterUtil.filterList(facultyRepository.findAllById(ids), Faculty::isActive);
     }
@@ -52,9 +53,10 @@ public class FacultyServiceImpl implements FacultyService {
         }
     }
 
+    @Override
     public Boolean deleteFaculty(@NotNull @Min(1) Long id) {
         Faculty faculty = facultyRepository.findById(id).orElse(null);
-        if(faculty!=null){
+        if (faculty != null) {
             faculty.setActive(false);
             facultyRepository.save(faculty);
             return true;

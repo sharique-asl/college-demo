@@ -8,6 +8,8 @@ public interface FacultyService {
 
     List<Faculty> getAllFaculties();
 
+    Faculty getFacultyById(Long id);
+
     List<Faculty> getFacultiesByIds(List<Long> ids);
 
     Faculty createFaculty(Faculty faculty);

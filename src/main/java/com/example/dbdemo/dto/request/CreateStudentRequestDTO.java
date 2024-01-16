@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateStudentRequestDTO {
-    @NotNull
+//    @NotNull
     private Long id;
 
     @NotNull
