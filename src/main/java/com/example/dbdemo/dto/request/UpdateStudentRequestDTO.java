@@ -1,14 +1,21 @@
 package com.example.dbdemo.dto.request;
 
+import com.example.dbdemo.dto.response.StudentResponseDTO;
+import com.example.dbdemo.model.Student;
 import com.example.dbdemo.utilities.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateStudentRequestDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -68,6 +75,44 @@ public class UpdateStudentRequestDTO {
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "PAN should be alphanumeric with no special characters.")
     @Size(min = 10, max = 10, message = "PAN should be 10 characters.")
     private String pan;
+
     private boolean isActive = true;
+
+    public Student generateStudent() {
+
+        Long id = this.getId();
+        Long rollNumber = this.getRollNumber();
+        String name = this.getName();
+        String fatherName = this.getFatherName();
+        String motherName = this.getMotherName();
+        String contactNumber = this.getContactNumber();
+        String backupContactNumber = this.getBackupContactNumber();
+        String fatherContactNumber = this.getFatherContactNumber();
+        Date dateOfBirth = this.getDateOfBirth();
+        String email = this.getEmail();
+        Gender gender = this.getGender();
+        String aadharNumber = this.getAadharNumber();
+        String pan = this.getPan();
+        boolean isActive = this.isActive();
+
+        return Student
+                .builder()
+                .id(id)
+                .rollNumber(rollNumber)
+                .name(name)
+                .fatherName(fatherName)
+                .motherName(motherName)
+                .contactNumber(contactNumber)
+                .backupContactNumber(backupContactNumber)
+                .fatherContactNumber(fatherContactNumber)
+                .dateOfBirth(dateOfBirth)
+                .email(email)
+                .gender(gender)
+                .aadharNumber(aadharNumber)
+                .pan(pan)
+                .isActive(isActive)
+                .build();
+    }
+
 
 }

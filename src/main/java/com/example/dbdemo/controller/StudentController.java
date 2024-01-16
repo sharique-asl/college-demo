@@ -1,5 +1,7 @@
 package com.example.dbdemo.controller;
 
+import com.example.dbdemo.dto.request.CreateStudentRequestDTO;
+import com.example.dbdemo.dto.request.UpdateStudentRequestDTO;
 import com.example.dbdemo.dto.response.StudentResponseDTO;
 import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.model.Student;
@@ -105,22 +107,23 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody Student student) {
+    public ResponseEntity<?> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
         try {
-            Student createdStudent = studentService.createStudent(student);
+            Student createdStudent = studentService.createStudent(student.generateStudent());
 
             StudentResponseDTO createdStudentDTO = StudentResponseDTO.generateStudentResponseDTO(createdStudent);
             return new ResponseEntity<>(createdStudentDTO, HttpStatus.CREATED);
         } catch (Exception e) {
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Unable to create student");
         }
     }
     @PutMapping("/students/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody Student student) {
+    public ResponseEntity<?> updateStudent(@PathVariable Long id, @Valid @RequestBody UpdateStudentRequestDTO student) {
         try{
-            Student updatedStudent = studentService.updateStudent(id, student);
+            Student updatedStudent = studentService.updateStudent(id, student.generateStudent());
 
             if (updatedStudent == null) {
                 return ResponseEntity
