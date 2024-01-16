@@ -35,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
         return this.filterUtil.filterList(studentRepository.findAll(Sort.by(sort)), Student::isActive);
     }
     @Override
-    @Cacheable(value = "student", key = "#id")
+//    @Cacheable(value = "student", key = "#id")
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);
     }

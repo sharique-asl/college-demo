@@ -17,20 +17,21 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateStudentRequestDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotNull
+
+    // remove the not null annotations.
+
+//    @NotNull
     @Digits(integer = 6, fraction = 0, message = "Roll number should be a number with up to 6 digits.")
     private Long rollNumber;
 
-    @NotBlank(message = "Name should not be null or empty")
+//    @NotBlank(message = "Name should not be null or empty")
     @Size(max = 255, message = "Name should not exceed 255 characters.")
     @Pattern(regexp = "^[a-zA-Z ]*$", message = "Name should contain only letters.")
     private String name;
 
-    @NotBlank(message = "Father's name should not be null or empty")
+//    @NotBlank(message = "Father's name should not be null or empty")
     @Size(max = 255, message = "Father's name should not exceed 255 characters.")
     @Pattern(regexp = "^[a-zA-Z ]*$", message = "Father's name should contain only letters.")
     private String fatherName;

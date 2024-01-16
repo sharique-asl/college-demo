@@ -17,8 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateStudentRequestDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @NotNull
     private Long id;
 
     @NotNull

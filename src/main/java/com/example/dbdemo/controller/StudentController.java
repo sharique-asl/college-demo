@@ -1,6 +1,7 @@
 package com.example.dbdemo.controller;
 
 import com.example.dbdemo.dto.request.CreateStudentRequestDTO;
+import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import com.example.dbdemo.dto.request.UpdateStudentRequestDTO;
 import com.example.dbdemo.dto.response.StudentResponseDTO;
 import com.example.dbdemo.model.Faculty;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +31,9 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private StudentServiceImpl studentServiceImpl;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @GetMapping("/students")
-    public ResponseEntity<?> getAllStudents(
+    public ResponseEntity<ResponseDTOWrapper> getAllStudents(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "gender", required = false) Gender gender,
             @RequestParam(name = "sort", required = false) String sort
@@ -55,41 +56,75 @@ public class StudentController {
                 System.out.println(students);
             }
 
-//            List<StudentResponseDTO> studentsDTO = students.stream().map(student -> modelMapper.map(student, StudentResponseDTO.class)).collect(Collectors.toList());
             List<StudentResponseDTO> studentsDTO = students
                     .stream()
                     .map(student -> StudentResponseDTO.generateStudentResponseDTO(student))
                     .collect(Collectors.toList());
-            return ResponseEntity.ok(studentsDTO);
+
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.builder()
+                                .students(studentsDTO)
+                                .build()
+                    );
+
         } catch (Exception e) {
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Fetching Students was unsuccessful");
+                    .body(
+                            ResponseDTOWrapper.builder()
+                                    .errorMessage("Fetching students was unsuccessful")
+                                    .build()
+                    );
         }
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable Long id) {
         try {
-            Student student = studentService.getStudentById(id);
+            System.out.println(id);
+            Student student = studentServiceImpl.getStudentById(id);
+
+            StudentResponseDTO studentDTO = StudentResponseDTO.generateStudentResponseDTO(student);
+
+            List<StudentResponseDTO> studentDTOs = new ArrayList<>(Arrays.asList(studentDTO));
             log.info(student.toString());
 
             if (student == null) {
+
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
-                        .body("No student found for the corresponding ID");
+                        .body(
+                                ResponseDTOWrapper.builder()
+                                        .errorMessage("No student found for the corresponding ID")
+                                        .build()
+                        );
             }
             return ResponseEntity
-                    .ok(StudentResponseDTO.generateStudentResponseDTO(student));
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.builder()
+                                    .students(studentDTOs)
+                                    .build()
+                    );
+
         } catch(Exception e) {
+
             return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Unable to fetch student using ID");
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        ResponseDTOWrapper.builder()
+                                .errorMessage("Unable to fetch student using ID")
+                                .build()
+                );
         }
     }
 
     @GetMapping("/students/ids")
-    public ResponseEntity<?> getStudentsByIds(@RequestParam List<Long> id) {
+    public ResponseEntity<ResponseDTOWrapper> getStudentsByIds(@RequestParam List<Long> id) {
         try {
             List<Student> students = studentService.getStudentsByIds(id);
 
@@ -98,21 +133,35 @@ public class StudentController {
                     .map(student -> StudentResponseDTO.generateStudentResponseDTO(student))
                     .collect(Collectors.toList());
 
-            return ResponseEntity.ok(studentsDTOs);
-        } catch (Exception e) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Unable to fetch students using IDs");
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.builder()
+                                    .students(studentsDTOs)
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.builder()
+                                    .errorMessage("Unable to fetch students using IDs")
+                                    .build()
+                    );
         }
     }
 
     @PostMapping("/students")
-    public ResponseEntity<?> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
+    public ResponseEntity<String> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
         try {
             Student createdStudent = studentService.createStudent(student.generateStudent());
 
             StudentResponseDTO createdStudentDTO = StudentResponseDTO.generateStudentResponseDTO(createdStudent);
-            return new ResponseEntity<>(createdStudentDTO, HttpStatus.CREATED);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Student created with id:" + createdStudentDTO.getId());
         } catch (Exception e) {
 
             return ResponseEntity
@@ -132,7 +181,10 @@ public class StudentController {
             }
 
             StudentResponseDTO updatedStudentDTO = StudentResponseDTO.generateStudentResponseDTO(updatedStudent);
-            return ResponseEntity.ok(updatedStudentDTO);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Student updated with id:" + updatedStudentDTO.getId());
 
         } catch (Exception e){
             return ResponseEntity
@@ -147,8 +199,12 @@ public class StudentController {
             Boolean status = studentService.deleteStudent(id);
 
             if (status)
-                return ResponseEntity.status(200).body("Deletion successful");
-            return ResponseEntity.status(500).body("Deletion unsuccessful");
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body("Deletion successful");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Deletion unsuccessful");
         } catch (Exception e){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
