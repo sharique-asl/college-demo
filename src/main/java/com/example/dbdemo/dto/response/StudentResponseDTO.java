@@ -1,9 +1,11 @@
 package com.example.dbdemo.dto.response;
 
+import com.example.dbdemo.model.Student;
 import com.example.dbdemo.utilities.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class StudentResponseDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -72,6 +75,49 @@ public class StudentResponseDTO {
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "PAN should be alphanumeric with no special characters.")
     @Size(min = 10, max = 10, message = "PAN should be 10 characters.")
     private String pan;
+
+    @Builder.Default
     private boolean isActive = true;
+
+    public static StudentResponseDTO generateStudentResponseDTO(Student student) {
+
+        if (student == null) {
+            return StudentResponseDTO
+                    .builder()
+                    .build();
+        }
+        Long id = student.getId();
+        Long rollNumber = student.getRollNumber();
+        String name = student.getName();
+        String fatherName = student.getFatherName();
+        String motherName = student.getMotherName();
+        String contactNumber = student.getContactNumber();
+        String backupContactNumber = student.getBackupContactNumber();
+        String fatherContactNumber = student.getFatherContactNumber();
+        Date dateOfBirth = student.getDateOfBirth();
+        String email = student.getEmail();
+        Gender gender = student.getGender();
+        String aadharNumber = student.getAadharNumber();
+        String pan = student.getPan();
+        boolean isActive = student.isActive();
+
+        return StudentResponseDTO
+                .builder()
+                    .id(id)
+                    .rollNumber(rollNumber)
+                    .name(name)
+                    .fatherName(fatherName)
+                    .motherName(motherName)
+                    .contactNumber(contactNumber)
+                    .backupContactNumber(backupContactNumber)
+                    .fatherContactNumber(fatherContactNumber)
+                    .dateOfBirth(dateOfBirth)
+                    .email(email)
+                    .gender(gender)
+                    .aadharNumber(aadharNumber)
+                    .pan(pan)
+                    .isActive(isActive)
+                .build();
+    }
 
 }
