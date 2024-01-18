@@ -1,6 +1,7 @@
 package com.example.dbdemo.controller;
 
 import com.example.dbdemo.model.Course;
+import com.example.dbdemo.model.Department;
 import com.example.dbdemo.service.CourseService;
 import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,16 +54,19 @@ public class CourseController {
     }
 
     @PostMapping("/courses/add")
-    public ResponseEntity<ResponseDTOWrapper<Course>> createCourse(@RequestBody Course course) {
-        Course createdCourse = courseService.createCourse(course);
+    public ResponseEntity<String> createCourse(@RequestBody Course course) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                        ResponseDTOWrapper.<Course>builder()
-                                .items(Collections.singletonList(createdCourse))
-                                .build()
-                );
+        try {
+            Course createdCourse = courseService.createCourse(course);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body("Success");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failure");
+        }
     }
 
     @PutMapping("courses/edit/{id}")

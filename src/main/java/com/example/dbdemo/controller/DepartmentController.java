@@ -52,16 +52,18 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments/add")
-    public ResponseEntity<ResponseDTOWrapper<Department>> createDepartment(@RequestBody Department department) {
-        Department createdDepartment = departmentService.createDepartment(department);
+    public ResponseEntity<String> createDepartment(@RequestBody Department department) {
+        try {
+            Department createdDepartment = departmentService.createDepartment(department);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                        ResponseDTOWrapper.<Department>builder()
-                                .items(Collections.singletonList(createdDepartment))
-                                .build()
-                );
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body("Success");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failure");
+        }
     }
 
     @PutMapping("/departments/edit/{id}")

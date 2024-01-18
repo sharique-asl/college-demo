@@ -89,28 +89,17 @@ public class FacultyController {
     }
 
     @PostMapping("/faculties/add")
-    public ResponseEntity<ResponseDTOWrapper<String>> createFaculty(@Valid @RequestBody Faculty faculty) {
+    public ResponseEntity<String> createFaculty(@Valid @RequestBody Faculty faculty) {
         try {
             Faculty createdFaculty = facultyService.createFaculty(faculty);
-
-            FacultyResponseDTO createdFacultyDTO = FacultyResponseDTO.generateFacultyResponseDTO(createdFaculty);
-
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(
-                            ResponseDTOWrapper.<String>builder()
-                                    .items(Collections.singletonList("Faculty created with id:" + createdFacultyDTO.getId()))
-                                    .build()
-                    );
+                    .body("Success");
 
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(
-                            ResponseDTOWrapper.<String>builder()
-                                    .errorMessage("Unable to create faculty")
-                                    .build()
-                    );
+                    .body("Failure");
         }
     }
 

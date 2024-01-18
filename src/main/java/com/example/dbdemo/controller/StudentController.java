@@ -113,27 +113,17 @@ public class StudentController {
     }
 
     @PostMapping("/students/add")
-    public ResponseEntity<ResponseDTOWrapper<String>> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
+    public ResponseEntity<String> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
         try {
             Student createdStudent = studentService.createStudent(student.generateStudent());
 
-            StudentResponseDTO createdStudentDTO = StudentResponseDTO.generateStudentResponseDTO(createdStudent);
-
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(
-                            ResponseDTOWrapper.<String>builder()
-                                    .items(Collections.singletonList("Student created with id:" + createdStudentDTO.getId()))
-                                    .build()
-                    );
+                    .body("Success");
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(
-                            ResponseDTOWrapper.<String>builder()
-                                    .errorMessage("Unable to create student")
-                                    .build()
-                    );
+                    .body("Failure");
         }
     }
 
