@@ -40,7 +40,7 @@ public class StudentController {
     @Autowired
     private StudentServiceImpl studentServiceImpl;
 
-    @GetMapping("/students")
+    @GetMapping("/students/get/")
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getAllStudents(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "gender", required = false) Gender gender,
@@ -83,7 +83,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/students/ids")
+    @GetMapping("/students/get/ids")
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getStudentsByIds(@RequestParam List<Long> id) {
         try {
             List<Student> students = studentService.getStudentsByIds(id);
@@ -112,7 +112,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/students")
+    @PostMapping("/students/add")
     public ResponseEntity<ResponseDTOWrapper<String>> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
         try {
             Student createdStudent = studentService.createStudent(student.generateStudent());
@@ -137,7 +137,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("/students/{id}")
+    @PutMapping("/students/edit/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> updateStudent(@PathVariable Long id, @Valid @RequestBody UpdateStudentRequestDTO student) {
         try {
             Student updatedStudent = studentService.updateStudent(id, student.generateStudent());
@@ -173,7 +173,7 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/students/{id}")
+    @DeleteMapping("/students/delete/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> deleteStudent(@PathVariable Long id) {
         try {
             Boolean status = studentService.deleteStudent(id);

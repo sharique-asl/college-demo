@@ -21,13 +21,12 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
 public class CourseController {
     // Course CRUD operations
     @Autowired
     private CourseService courseService;
 
-    @GetMapping
+    @GetMapping("/courses/get")
     public ResponseEntity<ResponseDTOWrapper<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
 
@@ -40,7 +39,7 @@ public class CourseController {
                 );
     }
 
-    @GetMapping("/ids")
+    @GetMapping("/courses/get/ids")
     public ResponseEntity<ResponseDTOWrapper<Course>> getCoursesByIds(@RequestParam List<Long> id) {
         List<Course> courses = courseService.getCoursesByIds(id);
 
@@ -53,7 +52,7 @@ public class CourseController {
                 );
     }
 
-    @PostMapping
+    @PostMapping("/courses/add")
     public ResponseEntity<ResponseDTOWrapper<Course>> createCourse(@RequestBody Course course) {
         Course createdCourse = courseService.createCourse(course);
 
@@ -66,7 +65,7 @@ public class CourseController {
                 );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("courses/edit/{id}")
     public ResponseEntity<ResponseDTOWrapper<Course>> updateCourse(@PathVariable Long id, @RequestBody Course course) {
         Course updatedCourse = courseService.updateCourse(id, course);
 
@@ -80,7 +79,7 @@ public class CourseController {
                 );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/courses/delete/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> deleteCourse(@PathVariable Long id) {
         Boolean status = courseService.deleteCourse(id);
 

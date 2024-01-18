@@ -20,13 +20,12 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/departments")
 public class DepartmentController {
     // Department CRUD operations
     @Autowired
     private DepartmentService departmentService;
 
-    @GetMapping
+    @GetMapping("/departments/get")
     public ResponseEntity<ResponseDTOWrapper<Department>> getAllDepartments() {
         List<Department> departments = departmentService.getAllDepartments();
 
@@ -39,7 +38,7 @@ public class DepartmentController {
                 );
     }
 
-    @GetMapping("/ids")
+    @GetMapping("/departments/get/ids")
     public ResponseEntity<ResponseDTOWrapper<Department>> getDepartmentsByIds(@RequestParam List<Long> id) {
         List<Department> departments = departmentService.getDepartmentsByIds(id);
 
@@ -52,7 +51,7 @@ public class DepartmentController {
                 );
     }
 
-    @PostMapping
+    @PostMapping("/departments/add")
     public ResponseEntity<ResponseDTOWrapper<Department>> createDepartment(@RequestBody Department department) {
         Department createdDepartment = departmentService.createDepartment(department);
 
@@ -65,7 +64,7 @@ public class DepartmentController {
                 );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/departments/edit/{id}")
     public ResponseEntity<ResponseDTOWrapper<Department>> updateDepartment(@PathVariable Long id, @RequestBody Department department) {
         Department updatedDepartment = departmentService.updateDepartment(id, department);
 
@@ -79,7 +78,7 @@ public class DepartmentController {
                 );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/departments/delete/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> deleteDepartment(@PathVariable Long id) {
         Boolean status = departmentService.deleteDepartment(id);
 

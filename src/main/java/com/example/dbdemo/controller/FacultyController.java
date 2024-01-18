@@ -30,7 +30,7 @@ public class FacultyController {
     @Autowired
     private FacultyService facultyService;
 
-    @GetMapping("/faculties")
+    @GetMapping("/faculties/get")
     public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getAllFaculties() {
         try {
             List<Faculty> faculties = facultyService.getAllFaculties();
@@ -59,7 +59,7 @@ public class FacultyController {
         }
     }
 
-    @GetMapping("/faculties/ids")
+    @GetMapping("/faculties/get/ids")
     public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getFacultiesByIds(@RequestParam List<Long> id) {
         try {
             List<Faculty> faculties = facultyService.getFacultiesByIds(id);
@@ -88,7 +88,7 @@ public class FacultyController {
         }
     }
 
-    @PostMapping("/faculties")
+    @PostMapping("/faculties/add")
     public ResponseEntity<ResponseDTOWrapper<String>> createFaculty(@Valid @RequestBody Faculty faculty) {
         try {
             Faculty createdFaculty = facultyService.createFaculty(faculty);
@@ -114,7 +114,7 @@ public class FacultyController {
         }
     }
 
-    @PutMapping("/faculties/{id}")
+    @PutMapping("/faculties/edit/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> updateFaculty(@PathVariable Long id, @Valid @RequestBody Faculty faculty) {
         try {
             Faculty updatedFaculty = facultyService.updateFaculty(id, faculty);
@@ -150,7 +150,7 @@ public class FacultyController {
         }
     }
 
-    @DeleteMapping("/faculties/{id}")
+    @DeleteMapping("/faculties/delete/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> deleteFaculty(@PathVariable Long id) {
         try {
             Boolean status = facultyService.deleteFaculty(id);
