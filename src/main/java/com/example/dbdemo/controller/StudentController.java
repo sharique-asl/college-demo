@@ -83,37 +83,6 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/students/{id}")
-    public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getStudentById(@PathVariable Long id) {
-        try {
-            Student student = studentService.getStudentById(id);
-
-            List<StudentResponseDTO> studentDTOs = new ArrayList<>();
-
-            if (student != null) {
-                studentDTOs.add(StudentResponseDTO.generateStudentResponseDTO(student));
-            }
-
-            return ResponseEntity
-                    .status(student != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseDTOWrapper.<StudentResponseDTO>builder()
-                                    .items(studentDTOs)
-                                    .errorMessage(student == null ? "No student found for the corresponding ID" : null)
-                                    .build()
-                    );
-
-        } catch(Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(
-                            ResponseDTOWrapper.<StudentResponseDTO>builder()
-                                    .errorMessage("Unable to fetch student using ID")
-                                    .build()
-                    );
-        }
-    }
-
     @GetMapping("/students/ids")
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getStudentsByIds(@RequestParam List<Long> id) {
         try {

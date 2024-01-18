@@ -39,21 +39,6 @@ public class DepartmentController {
                 );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTOWrapper<Department>> getDepartmentById(@PathVariable Long id) {
-        Department department = departmentService.getDepartmentById(id);
-
-        return ResponseEntity
-                .status(department != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
-                .body(
-                        ResponseDTOWrapper.<Department>builder()
-                                .items(department != null ? Collections.singletonList(department) : null)
-                                .errorMessage(department == null ? "No course found for the corresponding ID" : null)
-                                .build()
-                );
-    }
-
-
     @GetMapping("/ids")
     public ResponseEntity<ResponseDTOWrapper<Department>> getDepartmentsByIds(@RequestParam List<Long> id) {
         List<Department> departments = departmentService.getDepartmentsByIds(id);

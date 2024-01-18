@@ -40,20 +40,6 @@ public class CourseController {
                 );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTOWrapper<Course>> getCourseById(@PathVariable Long id) {
-        Course course = courseService.getCourseById(id);
-
-        return ResponseEntity
-                .status(course != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
-                .body(
-                        ResponseDTOWrapper.<Course>builder()
-                                .items(course != null ? Collections.singletonList(course) : null)
-                                .errorMessage(course == null ? "No course found for the corresponding ID" : null)
-                                .build()
-                );
-    }
-
     @GetMapping("/ids")
     public ResponseEntity<ResponseDTOWrapper<Course>> getCoursesByIds(@RequestParam List<Long> id) {
         List<Course> courses = courseService.getCoursesByIds(id);

@@ -59,37 +59,6 @@ public class FacultyController {
         }
     }
 
-    @GetMapping("/faculties/{id}")
-    public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getFacultyById(@PathVariable Long id) {
-        try {
-            Faculty faculty = facultyService.getFacultyById(id);
-
-            List<FacultyResponseDTO> facultyDTOs = new ArrayList<>();
-
-            if (faculty != null) {
-                facultyDTOs.add(FacultyResponseDTO.generateFacultyResponseDTO(faculty));
-            }
-
-            return ResponseEntity
-                    .status(faculty != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
-                    .body(
-                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
-                                    .items(facultyDTOs)
-                                    .errorMessage(faculty == null ? "No faculty found for the corresponding ID" : null)
-                                    .build()
-                    );
-
-        } catch(Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(
-                            ResponseDTOWrapper.<FacultyResponseDTO>builder()
-                                    .errorMessage("Unable to fetch faculty using ID")
-                                    .build()
-                    );
-        }
-    }
-
     @GetMapping("/faculties/ids")
     public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getFacultiesByIds(@RequestParam List<Long> id) {
         try {
