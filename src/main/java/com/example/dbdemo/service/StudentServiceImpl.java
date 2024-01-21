@@ -41,14 +41,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public List<Student> getFilteredStudents(String name, Gender gender) {
-        List<Student> students = studentRepository.findAll();
 
-        Predicate<Student> nameFilter = student -> name == null || student.getName().contains(name);
-        Predicate<Student> genderFilter = student -> gender == null || student.getGender().equals(gender);
+        return studentRepository.findFilteredStudents(name, gender);
 
-        Predicate<Student> combinedFilter = nameFilter.and(genderFilter);
-
-        return this.filterUtil.filterList(students, combinedFilter);
+//        List<Student> students = studentRepository.findAll();
+//
+//        Predicate<Student> nameFilter = student -> name == null || student.getName().contains(name);
+//        Predicate<Student> genderFilter = student -> gender == null || student.getGender().equals(gender);
+//
+//        Predicate<Student> combinedFilter = nameFilter.and(genderFilter);
+//
+//        return this.filterUtil.filterList(students, combinedFilter);
     }
 
 
