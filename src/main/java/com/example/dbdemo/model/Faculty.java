@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -53,4 +54,10 @@ public class Faculty implements Serializable {
     @Builder.Default
     private boolean isActive = true;
 
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @OneToMany(mappedBy = "faculty")
+    private Set<Course> courses;
 }

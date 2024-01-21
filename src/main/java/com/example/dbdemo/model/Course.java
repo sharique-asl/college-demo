@@ -25,4 +25,15 @@ public class Course  implements Serializable {
     private Long courseId;
 
     private String courseName;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> students;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 }
