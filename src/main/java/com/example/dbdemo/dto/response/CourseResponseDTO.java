@@ -1,7 +1,8 @@
 package com.example.dbdemo.dto.response;
 
 import com.example.dbdemo.model.Course;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

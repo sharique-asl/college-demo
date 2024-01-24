@@ -1,7 +1,9 @@
 package com.example.dbdemo.dto.response;
 
 import com.example.dbdemo.model.Department;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
