@@ -1,22 +1,16 @@
 package com.example.dbdemo.service;
 
-import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.StudentRepository;
 import com.example.dbdemo.utilities.FilterUtils;
 import com.example.dbdemo.utilities.Gender;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Predicate;
 
 @Service
 public class StudentServiceImpl implements StudentService {

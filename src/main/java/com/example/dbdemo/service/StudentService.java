@@ -1,7 +1,6 @@
 package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Student;
-
 import java.util.List;
 
 public interface StudentService {
