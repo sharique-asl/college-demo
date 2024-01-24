@@ -14,10 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CourseResponseDTO {
     private Long courseId;
-
-    @NotBlank(message = "Course Name should not be null or empty")
-    @Size(max = 100, message = "Course Name should not exceed 100 characters.")
     private String courseName;
+
     public static CourseResponseDTO generateCourseResponseDTO(Course course) {
 
         if (course == null) {

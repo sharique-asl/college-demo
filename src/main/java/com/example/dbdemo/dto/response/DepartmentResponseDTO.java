@@ -15,15 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DepartmentResponseDTO {
     private Long departmentId;
-
-    @NotBlank(message = "Department Name should not be null or empty")
-    @Size(max = 20, message = "Department Name should not exceed 20 characters.")
-    @Pattern(regexp = "^[a-zA-Z ]*$", message = "Department Name should contain only letters.")
     private String departmentName;
-
-    @NotBlank(message = "HOD Name should not be null or empty")
-    @Size(max = 255, message = "HOD Name should not exceed 20 characters.")
-    @Pattern(regexp = "^[a-zA-Z ]*$", message = "HOD Name should contain only letters.")
     private String hod;
     public static DepartmentResponseDTO generateDepartmentResponseDTO(Department department) {
 
