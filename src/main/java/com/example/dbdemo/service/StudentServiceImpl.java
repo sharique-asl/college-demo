@@ -19,36 +19,23 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     private FilterUtils<Student> filterUtil = new FilterUtils<>();
 
-
     @Override
-    public List<Student> getAllStudents() {
-        return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
+    public List<Student> getAllStudents(String name, Gender gender,String sort) {
+        List<Student> students = this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
+        if (sort != null && !sort.isEmpty()) {
+            students = filterUtil.filterList(studentRepository.findAll(Sort.by(sort)), Student::isActive);
+        }
+        if (name != null || gender != null) {
+            students = studentRepository.findFilteredStudents(name, gender);
+        }
+        return students;
     }
 
-    public List<Student> getAllSortedStudents(String sort){
-        return this.filterUtil.filterList(studentRepository.findAll(Sort.by(sort)), Student::isActive);
-    }
     @Override
 //    @Cacheable(value = "student", key = "#id")
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);
     }
-
-    public List<Student> getFilteredStudents(String name, Gender gender) {
-
-        return studentRepository.findFilteredStudents(name, gender);
-
-//        List<Student> students = studentRepository.findAll();
-//
-//        Predicate<Student> nameFilter = student -> name == null || student.getName().contains(name);
-//        Predicate<Student> genderFilter = student -> gender == null || student.getGender().equals(gender);
-//
-//        Predicate<Student> combinedFilter = nameFilter.and(genderFilter);
-//
-//        return this.filterUtil.filterList(students, combinedFilter);
-    }
-
-
 
     @Override
     public List<Student> getStudentsByIds(@NotNull List<Long> ids) {

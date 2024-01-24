@@ -35,24 +35,14 @@ public class StudentController {
     @Autowired
     private StudentServiceImpl studentServiceImpl;
 
-    @GetMapping("/students/get")
+    @PostMapping("/students/get")
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getAllStudents(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "gender", required = false) Gender gender,
             @RequestParam(name = "sort", required = false) String sort
     ) {
         try {
-            List<Student> students = null;
-
-            if (sort != null && !sort.isEmpty()) {
-                students = studentServiceImpl.getAllSortedStudents(sort);
-            } else {
-                students = studentService.getAllStudents();
-            }
-
-            if (name != null || gender != null) {
-                students = studentServiceImpl.getFilteredStudents(name, gender);
-            }
+            List<Student> students = studentService.getAllStudents(name, gender, sort);
 
             List<StudentResponseDTO> studentsDTO = students
                     .stream()
