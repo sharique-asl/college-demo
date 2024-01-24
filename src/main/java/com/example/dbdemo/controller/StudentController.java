@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,15 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @PostMapping("/getAllStudents")
+    @PostMapping(value = "/getAllStudents", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getAllStudents(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "gender", required = false) Gender gender,
             @RequestParam(name = "sort", required = false) String sort
     ) {
         try {
+            if(sort == null)
+                sort = "id";
             List<Student> students = studentService.getAllStudents(name, gender, sort);
 
             List<StudentResponseDTO> studentsDTO = students
@@ -60,7 +63,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/getStudentsByIds")
+    @GetMapping(value = "/getStudentsByIds", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getStudentsByIds(@RequestParam List<Long> id) {
         try {
             List<Student> students = studentService.getStudentsByIds(id);
@@ -89,7 +92,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/createStudent")
+    @PostMapping(value = "/createStudent", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
         try {
             Student createdStudent = studentService.createStudent(student.generateStudent());
@@ -104,7 +107,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("/updateStudent/{id}")
+    @PutMapping(value = "/updateStudent/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTOWrapper<String>> updateStudent(@PathVariable Long id, @Valid @RequestBody UpdateStudentRequestDTO student) {
         try {
             Student updatedStudent = studentService.updateStudent(id, student.generateStudent());
@@ -140,7 +143,7 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/deleteStudent/{id}")
+    @DeleteMapping(value = "/deleteStudent/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<String>> deleteStudent(@PathVariable Long id) {
         try {
             Boolean status = studentService.deleteStudent(id);

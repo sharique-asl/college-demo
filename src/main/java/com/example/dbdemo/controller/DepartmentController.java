@@ -5,6 +5,7 @@ import com.example.dbdemo.service.DepartmentService;
 import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    @PostMapping("/getAllDepartments")
+    @PostMapping(value = "/getAllDepartments", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<Department>> getAllDepartments() {
         List<Department> departments = departmentService.getAllDepartments();
 
@@ -31,7 +32,7 @@ public class DepartmentController {
                 );
     }
 
-    @GetMapping("/getDepartmentsByIds")
+    @GetMapping(value = "/getDepartmentsByIds", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<Department>> getDepartmentsByIds(@RequestParam List<Long> id) {
         List<Department> departments = departmentService.getDepartmentsByIds(id);
 
@@ -44,7 +45,7 @@ public class DepartmentController {
                 );
     }
 
-    @PostMapping("/createDepartment")
+    @PostMapping(value = "/createDepartment", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createDepartment(@RequestBody Department department) {
         try {
             Department createdDepartment = departmentService.createDepartment(department);
@@ -59,7 +60,7 @@ public class DepartmentController {
         }
     }
 
-    @PutMapping("/updateDepartment/{id}")
+    @PutMapping(value = "/updateDepartment/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTOWrapper<Department>> updateDepartment(@PathVariable Long id, @RequestBody Department department) {
         Department updatedDepartment = departmentService.updateDepartment(id, department);
 
@@ -73,7 +74,7 @@ public class DepartmentController {
                 );
     }
 
-    @DeleteMapping("/deleteDepartment/{id}")
+    @DeleteMapping(value = "/deleteDepartment/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<String>> deleteDepartment(@PathVariable Long id) {
         Boolean status = departmentService.deleteDepartment(id);
 

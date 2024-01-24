@@ -5,6 +5,7 @@ import com.example.dbdemo.service.CourseService;
 import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @PostMapping("/getAllCourses")
+    @PostMapping(value = "/getAllCourses", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
 
@@ -31,7 +32,7 @@ public class CourseController {
                 );
     }
 
-    @GetMapping("/getCoursesByIds")
+    @GetMapping(value = "/getCoursesByIds", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<Course>> getCoursesByIds(@RequestParam List<Long> id) {
         List<Course> courses = courseService.getCoursesByIds(id);
 
@@ -44,7 +45,7 @@ public class CourseController {
                 );
     }
 
-    @PostMapping("/createCourse")
+    @PostMapping(value = "/createCourse", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createCourse(@RequestBody Course course) {
 
         try {
@@ -60,7 +61,7 @@ public class CourseController {
         }
     }
 
-    @PutMapping("/updateCourse/{id}")
+    @PutMapping(value = "/updateCourse/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTOWrapper<Course>> updateCourse(@PathVariable Long id, @RequestBody Course course) {
         Course updatedCourse = courseService.updateCourse(id, course);
 
@@ -74,7 +75,7 @@ public class CourseController {
                 );
     }
 
-    @DeleteMapping("/deleteCourse/{id}")
+    @DeleteMapping(value = "/deleteCourse/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<ResponseDTOWrapper<String>> deleteCourse(@PathVariable Long id) {
         Boolean status = courseService.deleteCourse(id);
 
