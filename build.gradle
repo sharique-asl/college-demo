@@ -30,7 +30,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' // giving us which type of database we are going to use for caching
 	implementation 'org.springframework.boot:spring-boot-starter-cache' // required for enabling caching mechanism
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
