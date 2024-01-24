@@ -18,8 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -32,13 +31,13 @@ public class FacultyResponseDTO {
     private String motherName;
     private String contactNumber;
     private String backupContactNumber;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String email;
     private Gender gender;
     private String aadharNumber;
     private String pan;
     private String maritalStatus;
-    private LocalDate dateOfJoining = LocalDate.now();
+    private Date dateOfJoining = new Date();
     private boolean isActive = true;
 
     public static FacultyResponseDTO generateFacultyResponseDTO(Faculty faculty) {
@@ -53,13 +52,13 @@ public class FacultyResponseDTO {
         String motherName = faculty.getMotherName();
         String contactNumber = faculty.getContactNumber();
         String backupContactNumber = faculty.getBackupContactNumber();
-        LocalDate dateOfBirth = faculty.getDateOfBirth();
+        Date dateOfBirth = faculty.getDateOfBirth();
         String email = faculty.getEmail();
         Gender gender = faculty.getGender();
         String aadharNumber = faculty.getAadharNumber();
         String pan = faculty.getPan();
         String maritalStatus = faculty.getMaritalStatus();
-        LocalDate dateOfJoining = faculty.getDateOfJoining();
+        Date dateOfJoining = faculty.getDateOfJoining();
         boolean isActive = faculty.isActive();
 
         return FacultyResponseDTO.builder()

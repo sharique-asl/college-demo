@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -49,7 +49,7 @@ public class CreateFacultyRequestDTO {
 
     @NotNull
     @Past(message = "Date of birth should be in the past.")
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
 
     @NotBlank
     @Email(message = "Invalid email format.")
@@ -71,7 +71,7 @@ public class CreateFacultyRequestDTO {
     private String maritalStatus;
 
     @PastOrPresent(message = "Date of joining should be in the past or present.")
-    private LocalDate dateOfJoining = LocalDate.now();
+    private Date dateOfJoining = new Date();
 
     private boolean isActive = true;
 
@@ -81,13 +81,13 @@ public class CreateFacultyRequestDTO {
         String motherName = this.getMotherName();
         String contactNumber = this.getContactNumber();
         String backupContactNumber = this.getBackupContactNumber();
-        LocalDate dateOfBirth = this.getDateOfBirth();
+        Date dateOfBirth = this.getDateOfBirth();
         String email = this.getEmail();
         Gender gender = this.getGender();
         String aadharNumber = this.getAadharNumber();
         String pan = this.getPan();
         String maritalStatus = this.getMaritalStatus();
-        LocalDate dateOfJoining = this.getDateOfJoining();
+        Date dateOfJoining = this.getDateOfJoining();
         boolean isActive = this.isActive();
 
         return Faculty.builder()

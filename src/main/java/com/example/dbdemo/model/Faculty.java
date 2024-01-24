@@ -17,7 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -42,7 +42,7 @@ public class Faculty implements Serializable {
 
     private String backupContactNumber;
 
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
 
     private String email;
 
@@ -56,7 +56,7 @@ public class Faculty implements Serializable {
     private String maritalStatus;
 
     @PastOrPresent(message = "Date of joining should be in the past or present.")
-    private LocalDate dateOfJoining = LocalDate.now();
+    private Date dateOfJoining = new Date();
 
     @Builder.Default
     private boolean isActive = true;
