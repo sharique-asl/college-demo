@@ -3,13 +3,19 @@ package com.example.dbdemo.dto.request;
 import com.example.dbdemo.dto.response.FacultyResponseDTO;
 import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.utilities.Gender;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 @Data

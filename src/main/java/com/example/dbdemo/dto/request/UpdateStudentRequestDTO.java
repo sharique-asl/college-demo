@@ -1,17 +1,17 @@
 package com.example.dbdemo.dto.request;
 
-import com.example.dbdemo.dto.response.StudentResponseDTO;
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.utilities.Gender;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
