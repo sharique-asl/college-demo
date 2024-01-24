@@ -27,8 +27,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateStudentRequestDTO {
-//    @NotNull
-    private Long id;
 
     @NotNull
     @Digits(integer = 6, fraction = 0, message = "Roll number should be a number with up to 6 digits.")
@@ -89,7 +87,6 @@ public class CreateStudentRequestDTO {
 
     public Student generateStudent() {
 
-        Long id = this.getId();
         Long rollNumber = this.getRollNumber();
         String name = this.getName();
         String fatherName = this.getFatherName();
@@ -106,7 +103,6 @@ public class CreateStudentRequestDTO {
 
         return Student
                 .builder()
-                    .id(id)
                     .rollNumber(rollNumber)
                     .name(name)
                     .fatherName(fatherName)

@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateDepartmentRequestDTO {
-    private Long departmentId;
 
     @NotBlank(message = "Department Name should not be null or empty")
     @Size(max = 20, message = "Department Name should not exceed 20 characters.")
@@ -26,13 +25,11 @@ public class CreateDepartmentRequestDTO {
     private String hod;
 
     public Department generateDepartment() {
-        Long departmentId = this.getDepartmentId();
         String departmentName = this.getDepartmentName();
         String hod = this.getHod();
 
         return Department
                 .builder()
-                    .departmentId(departmentId)
                     .departmentName(departmentName)
                     .hod(hod)
                 .build();

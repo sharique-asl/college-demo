@@ -12,18 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCourseRequestDTO {
-    private Long courseId;
 
     @NotBlank(message = "Course Name should not be null or empty")
     @Size(max = 100, message = "Course Name should not exceed 100 characters.")
     private String courseName;
 
     public Course generateCourse() {
-        Long courseId = this.getCourseId();
         String courseName = this.getCourseName();
 
         return Course.builder()
-                .courseId(courseId)
                 .courseName(courseName)
                 .build();
     }

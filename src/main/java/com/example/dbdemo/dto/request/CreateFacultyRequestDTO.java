@@ -22,8 +22,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateFacultyRequestDTO {
-    @NotNull
-    private Long id;
 
     @NotBlank(message = "Name should not be null or empty")
     @Size(max = 255, message = "Name should not exceed 255 characters.")
@@ -78,7 +76,6 @@ public class CreateFacultyRequestDTO {
     private boolean isActive = true;
 
     public Faculty generateFaculty() {
-        Long id = this.getId();
         String name = this.getName();
         String fatherName = this.getFatherName();
         String motherName = this.getMotherName();
@@ -94,7 +91,6 @@ public class CreateFacultyRequestDTO {
         boolean isActive = this.isActive();
 
         return Faculty.builder()
-                .id(id)
                 .name(name)
                 .fatherName(fatherName)
                 .motherName(motherName)
