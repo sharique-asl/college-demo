@@ -6,24 +6,19 @@ import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 
 @RestController
+@RequestMapping("/department")
 public class DepartmentController {
     // Department CRUD operations
     @Autowired
     private DepartmentService departmentService;
 
-    @GetMapping("/departments/get")
+    @PostMapping("/getAllDepartments")
     public ResponseEntity<ResponseDTOWrapper<Department>> getAllDepartments() {
         List<Department> departments = departmentService.getAllDepartments();
 
@@ -36,7 +31,7 @@ public class DepartmentController {
                 );
     }
 
-    @GetMapping("/departments/get/ids")
+    @GetMapping("/getDepartmentsByIds")
     public ResponseEntity<ResponseDTOWrapper<Department>> getDepartmentsByIds(@RequestParam List<Long> id) {
         List<Department> departments = departmentService.getDepartmentsByIds(id);
 
@@ -49,7 +44,7 @@ public class DepartmentController {
                 );
     }
 
-    @PostMapping("/departments/add")
+    @PostMapping("/createDepartment")
     public ResponseEntity<String> createDepartment(@RequestBody Department department) {
         try {
             Department createdDepartment = departmentService.createDepartment(department);
@@ -64,7 +59,7 @@ public class DepartmentController {
         }
     }
 
-    @PutMapping("/departments/edit/{id}")
+    @PutMapping("/updateDepartment/{id}")
     public ResponseEntity<ResponseDTOWrapper<Department>> updateDepartment(@PathVariable Long id, @RequestBody Department department) {
         Department updatedDepartment = departmentService.updateDepartment(id, department);
 
@@ -78,7 +73,7 @@ public class DepartmentController {
                 );
     }
 
-    @DeleteMapping("/departments/delete/{id}")
+    @DeleteMapping("/deleteDepartment/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> deleteDepartment(@PathVariable Long id) {
         Boolean status = departmentService.deleteDepartment(id);
 

@@ -6,24 +6,19 @@ import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 
 @RestController
+@RequestMapping("/course")
 public class CourseController {
     // Course CRUD operations
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/courses/get")
+    @PostMapping("/getAllCourses")
     public ResponseEntity<ResponseDTOWrapper<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
 
@@ -36,7 +31,7 @@ public class CourseController {
                 );
     }
 
-    @GetMapping("/courses/get/ids")
+    @GetMapping("/getCoursesByIds")
     public ResponseEntity<ResponseDTOWrapper<Course>> getCoursesByIds(@RequestParam List<Long> id) {
         List<Course> courses = courseService.getCoursesByIds(id);
 
@@ -49,7 +44,7 @@ public class CourseController {
                 );
     }
 
-    @PostMapping("/courses/add")
+    @PostMapping("/createCourse")
     public ResponseEntity<String> createCourse(@RequestBody Course course) {
 
         try {
@@ -65,7 +60,7 @@ public class CourseController {
         }
     }
 
-    @PutMapping("courses/edit/{id}")
+    @PutMapping("/updateCourse/{id}")
     public ResponseEntity<ResponseDTOWrapper<Course>> updateCourse(@PathVariable Long id, @RequestBody Course course) {
         Course updatedCourse = courseService.updateCourse(id, course);
 
@@ -79,7 +74,7 @@ public class CourseController {
                 );
     }
 
-    @DeleteMapping("/courses/delete/{id}")
+    @DeleteMapping("/deleteCourse/{id}")
     public ResponseEntity<ResponseDTOWrapper<String>> deleteCourse(@PathVariable Long id) {
         Boolean status = courseService.deleteCourse(id);
 
