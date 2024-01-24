@@ -22,6 +22,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateFacultyRequestDTO {
+    @NotNull
     private Long id;
 
     @Size(max = 255, message = "Name should not exceed 255 characters.")

@@ -2,6 +2,7 @@ package com.example.dbdemo.dto.request;
 
 import com.example.dbdemo.model.Course;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCourseRequestDTO {
+    @NotNull
     private Long courseId;
 
     @Size(max = 100, message = "Course Name should not exceed 100 characters.")

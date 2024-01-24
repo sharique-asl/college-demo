@@ -9,6 +9,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateStudentRequestDTO {
+
+    @NotNull
     private Long id;
 
     @Digits(integer = 6, fraction = 0, message = "Roll number should be a number with up to 6 digits.")

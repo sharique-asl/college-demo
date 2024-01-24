@@ -1,6 +1,7 @@
 package com.example.dbdemo.dto.request;
 
 import com.example.dbdemo.model.Department;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateDepartmentRequestDTO {
+    @NotNull
     private Long departmentId;
 
     @Size(max = 20, message = "Department Name should not exceed 20 characters.")
