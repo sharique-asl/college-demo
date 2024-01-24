@@ -1,7 +1,6 @@
 package com.example.dbdemo.controller;
 
 import com.example.dbdemo.model.Course;
-import com.example.dbdemo.model.Department;
 import com.example.dbdemo.service.CourseService;
 import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-
 import java.util.Collections;
 import java.util.List;
 

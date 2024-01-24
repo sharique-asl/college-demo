@@ -4,14 +4,12 @@ import com.example.dbdemo.dto.request.CreateStudentRequestDTO;
 import com.example.dbdemo.dto.request.ResponseDTOWrapper;
 import com.example.dbdemo.dto.request.UpdateStudentRequestDTO;
 import com.example.dbdemo.dto.response.StudentResponseDTO;
-import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.model.Student;
 import com.example.dbdemo.service.StudentService;
 import com.example.dbdemo.service.StudentServiceImpl;
 import com.example.dbdemo.utilities.Gender;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +35,7 @@ public class StudentController {
     @Autowired
     private StudentServiceImpl studentServiceImpl;
 
-    @GetMapping("/students/get/")
+    @GetMapping("/students/get")
     public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getAllStudents(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "gender", required = false) Gender gender,
