@@ -146,7 +146,7 @@ public class FacultyController {
                     .status(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
                     .body(
                             ResponseDTOWrapper.<String>builder()
-                                    .items(Collections.singletonList(status ? "Deletion successful" : "Deletion unsuccessful"))
+                                    .items(Collections.singletonList(status ? "Deletion successful" : "Deletion Failed"))
                                     .build()
                     );
 
