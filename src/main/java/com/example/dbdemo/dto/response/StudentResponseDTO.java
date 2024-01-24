@@ -89,7 +89,6 @@ public class StudentResponseDTO {
     @Size(min = 10, max = 10, message = "PAN should be 10 characters.")
     private String pan;
 
-    @Builder.Default
     private boolean isActive = true;
 
     public static StudentResponseDTO generateStudentResponseDTO(Student student) {

@@ -56,7 +56,6 @@ public class Faculty implements Serializable {
     private String maritalStatus;
 
     @PastOrPresent(message = "Date of joining should be in the past or present.")
-    @Builder.Default
     private LocalDate dateOfJoining = LocalDate.now();
 
     @Builder.Default

@@ -57,7 +57,6 @@ public class Student implements Serializable {
 
     private String pan;
 
-    @Builder.Default
     private boolean isActive = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
