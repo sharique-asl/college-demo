@@ -56,8 +56,6 @@ public class StudentServiceImpl implements StudentService {
             student.setId(id);
             return studentRepository.save(student);
         } else {
-            // Handle the case where the student with the given ID does not exist.
-            // You might throw an exception or return a specific response.
             return null;
         }
     }
@@ -73,9 +71,3 @@ public class StudentServiceImpl implements StudentService {
         return false;
     }
 }
-/*
-* instead of downloading and installing, install docker desktop and then run
-* > docker pull redis
-* docker run --name redis-cache -p 6379:6379 -d redis:7.2.3
-* */
-//soft delete , fetch only active

@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/course")
 public class CourseController {
-    // Course CRUD operations
     @Autowired
     private CourseService courseService;
 

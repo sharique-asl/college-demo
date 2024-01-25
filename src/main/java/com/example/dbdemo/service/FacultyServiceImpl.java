@@ -46,8 +46,6 @@ public class FacultyServiceImpl implements FacultyService {
             faculty.setId(id);
             return facultyRepository.save(faculty);
         } else {
-            // Handle the case where the faculty with the given ID does not exist.
-            // You might throw an exception or return a specific response.
             return null;
         }
     }

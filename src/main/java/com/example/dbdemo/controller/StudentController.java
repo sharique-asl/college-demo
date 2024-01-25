@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/students")
 @Slf4j
 public class StudentController {
-    // Student CRUD operations
     @Autowired
     private StudentService studentService;
 

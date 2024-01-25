@@ -46,8 +46,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setDepartmentId(id);
             return departmentRepository.save(department);
         } else {
-            // Handle the case where the department with the given ID does not exist.
-            // You might throw an exception or return a specific response.
             return null;
         }
     }

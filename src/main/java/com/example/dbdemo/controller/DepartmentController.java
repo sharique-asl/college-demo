@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
-    // Department CRUD operations
     @Autowired
     private DepartmentService departmentService;
 

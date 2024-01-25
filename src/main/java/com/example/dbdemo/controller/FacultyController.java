@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/faculty")
 @Slf4j
 public class FacultyController {
-    // Faculty CRUD operations
     @Autowired
     private FacultyService facultyService;
 

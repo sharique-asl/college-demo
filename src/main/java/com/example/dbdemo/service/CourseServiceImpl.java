@@ -45,8 +45,6 @@ public class CourseServiceImpl implements CourseService {
             course.setCourseId(id);
             return courseRepository.save(course);
         } else {
-            // Handle the case where the course with the given ID does not exist.
-            // You might throw an exception or return a specific response.
             return null;
         }
     }
