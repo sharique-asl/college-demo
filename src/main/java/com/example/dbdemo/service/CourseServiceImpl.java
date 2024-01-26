@@ -2,9 +2,6 @@ package com.example.dbdemo.service;
 
 import com.example.dbdemo.model.Course;
 import com.example.dbdemo.repository.CourseRepository;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +24,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesByIds(@NotNull List<Long> ids) {
+    public List<Course> getCoursesByIds(List<Long> ids) {
         if (ids.isEmpty())
             return courseRepository.findAll();
 
@@ -35,12 +32,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course createCourse(@Valid Course course) {
+    public Course createCourse(Course course) {
         return courseRepository.save(course);
     }
 
     @Override
-    public Course updateCourse(@NotNull @Min(1) Long id, @Valid Course course) {
+    public Course updateCourse(Course course) {
+        Long id = course.getCourseId();
         if (courseRepository.existsById(id)) {
             course.setCourseId(id);
             return courseRepository.save(course);
@@ -50,7 +48,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Boolean deleteCourse(@NotNull @Min(1) Long id) {
+    public Boolean deleteCourse(Long id) {
         Course course = courseRepository.findById(id).orElse(null);
         if(course!=null){
             courseRepository.deleteById(id);

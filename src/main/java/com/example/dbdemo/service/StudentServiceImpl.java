@@ -4,9 +4,6 @@ import com.example.dbdemo.model.Student;
 import com.example.dbdemo.repository.StudentRepository;
 import com.example.dbdemo.utilities.FilterUtils;
 import com.example.dbdemo.utilities.Gender;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -38,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getStudentsByIds(@NotNull List<Long> ids) {
+    public List<Student> getStudentsByIds(List<Long> ids) {
         if (ids.isEmpty())
             return this.filterUtil.filterList(studentRepository.findAll(), Student::isActive);
 
@@ -46,12 +43,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student createStudent(@Valid Student student) {
+    public Student createStudent(Student student) {
         return studentRepository.save(student);
     }
 
     @Override
-    public Student updateStudent(@NotNull @Min(1) Long id, @Valid Student student) {
+    public Student updateStudent(Student student) {
+        Long id = student.getId();
         if (studentRepository.existsById(id)) {
             student.setId(id);
             return studentRepository.save(student);
@@ -61,7 +59,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Boolean deleteStudent(@NotNull @Min(1) Long id) {
+    public Boolean deleteStudent(Long id) {
         Student student = studentRepository.findById(id).orElse(null);
         if(student!=null){
             student.setActive(false);

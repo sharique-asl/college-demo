@@ -3,10 +3,9 @@ package com.example.dbdemo.service;
 import com.example.dbdemo.model.Faculty;
 import com.example.dbdemo.repository.FacultyRepository;
 import com.example.dbdemo.utilities.FilterUtils;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import com.example.dbdemo.utilities.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,8 +17,15 @@ public class FacultyServiceImpl implements FacultyService {
     private FilterUtils<Faculty> filterUtil = new FilterUtils<>();
 
     @Override
-    public List<Faculty> getAllFaculties() {
-        return this.filterUtil.filterList(facultyRepository.findAll(), Faculty::isActive);
+    public List<Faculty> getAllFaculties(String name, Gender gender, String sort) {
+        List<Faculty> faculties = this.filterUtil.filterList(facultyRepository.findAll(), Faculty::isActive);
+        if (sort != null && !sort.isEmpty()) {
+            faculties = filterUtil.filterList(facultyRepository.findAll(Sort.by(sort)), Faculty::isActive);
+        }
+        if (name != null || gender != null) {
+            faculties = facultyRepository.findFilteredFaculties(name, gender);
+        }
+        return faculties;
     }
 
     @Override
@@ -28,7 +34,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public List<Faculty> getFacultiesByIds(@NotNull List<Long> ids) {
+    public List<Faculty> getFacultiesByIds(List<Long> ids) {
         if (ids.isEmpty())
             return this.filterUtil.filterList(facultyRepository.findAll(), Faculty::isActive);
 
@@ -36,12 +42,13 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty createFaculty(@Valid Faculty faculty) {
+    public Faculty createFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 
     @Override
-    public Faculty updateFaculty(@NotNull @Min(1) Long id, @Valid Faculty faculty) {
+    public Faculty updateFaculty(Faculty faculty) {
+        Long id = faculty.getId();
         if (facultyRepository.existsById(id)) {
             faculty.setId(id);
             return facultyRepository.save(faculty);
@@ -51,7 +58,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Boolean deleteFaculty(@NotNull @Min(1) Long id) {
+    public Boolean deleteFaculty(Long id) {
         Faculty faculty = facultyRepository.findById(id).orElse(null);
         if (faculty != null) {
             faculty.setActive(false);

@@ -13,7 +13,7 @@ public interface CourseService {
 
     Course createCourse(Course course);
 
-    Course updateCourse(Long id, Course course);
+    Course updateCourse(Course course);
 
     Boolean deleteCourse(Long id);
 }

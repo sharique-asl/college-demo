@@ -58,7 +58,6 @@ public class Faculty implements Serializable {
     @PastOrPresent(message = "Date of joining should be in the past or present.")
     private Date dateOfJoining = new Date();
 
-    @Builder.Default
     private boolean isActive = true;
 
     @ManyToOne
