@@ -35,7 +35,7 @@ public class FacultyController {
     @Autowired
     private FacultyService facultyService;
 
-    @GetMapping(value = "/getAllFaculties", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/getAllFaculties", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTOWrapper<FacultyResponseDTO>> getAllFaculties(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "gender", required = false) Gender gender,
