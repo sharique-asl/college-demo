@@ -1,57 +1,101 @@
 package com.example.dbdemo.controller;
 
-import com.example.dbdemo.model.*;
-import com.example.dbdemo.service.*;
+import com.example.dbdemo.model.Course;
+import com.example.dbdemo.service.CourseService;
+import com.example.dbdemo.dto.request.ResponseDTOWrapper;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/course")
 public class CourseController {
-    // Course CRUD operations
     @Autowired
     private CourseService courseService;
 
-    @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
+    @GetMapping(value = "/getAllCourses", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
-        return ResponseEntity.ok(courses);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(courses)
+                                .build()
+                );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
-        Course course = courseService.getCourseById(id);
-        return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
+    @GetMapping(value = "/getCoursesByIds", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<Course>> getCoursesByIds(@NotNull @RequestParam List<Long> id) {
+        List<Course> courses = courseService.getCoursesByIds(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(courses)
+                                .build()
+                );
     }
 
-    @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        Course createdCourse = courseService.createCourse(course);
-        return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
+    @PostMapping(value = "/createCourse", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createCourse(@Valid @RequestBody Course course) {
+
+        try {
+            Course createdCourse = courseService.createCourse(course);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body("Success");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failure");
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course course) {
-        Course updatedCourse = courseService.updateCourse(id, course);
-        return updatedCourse != null ? ResponseEntity.ok(updatedCourse) : ResponseEntity.notFound().build();
+    @PutMapping(value = "/updateCourse/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<Course>> updateCourse(@Valid @RequestBody Course course) {
+        Course updatedCourse = courseService.updateCourse(course);
+
+        return ResponseEntity
+                .status(updatedCourse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND)
+                .body(
+                        ResponseDTOWrapper.<Course>builder()
+                                .items(updatedCourse != null ? Collections.singletonList(updatedCourse) : null)
+                                .errorMessage(updatedCourse == null ? "Course to be updated not found" : null)
+                                .build()
+                );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
-        courseService.deleteCourse(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping(value = "/deleteCourse/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<String>> deleteCourse(@NotNull @Min(1) @PathVariable Long id) {
+        Boolean status = courseService.deleteCourse(id);
+
+        return ResponseEntity
+                .status(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(
+                        ResponseDTOWrapper.<String>builder()
+                                .items(Collections.singletonList(status ? "Deletion successful" : "Deletion Failed"))
+                                .build()
+                );
     }
-
-
 }
-//get all for student course department faculty
-//get studentDetails course facultyDetails Department based on ids
-//update for student course department faculty - partial and full
-//soft delete
-//isActive email contactNumber backupContactNumber maritalStatus - partial update (patch),full update (put) - anything else apart from id
-//dto-> request - StudentRequestDto FacultyRequestDto DepartmentRequestDto CourseRequestDto StudentUpdateDto FacultyUpdateDto DepartmentUpdateDto FacultyUpdateDto
-//dto-> response - StudentResponseDto

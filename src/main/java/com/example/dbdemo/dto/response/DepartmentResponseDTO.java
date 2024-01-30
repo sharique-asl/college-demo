@@ -1,17 +1,38 @@
 package com.example.dbdemo.dto.response;
 
+import com.example.dbdemo.model.Department;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class DepartmentResponseDTO {
     private Long departmentId;
     private String departmentName;
     private String hod;
-    // Additional fields if needed
+    public static DepartmentResponseDTO generateDepartmentResponseDTO(Department department) {
 
-    public DepartmentResponseDTO(Long departmentId, String departmentName, String hod) {
-        this.departmentId = departmentId;
-        this.departmentName = departmentName;
-        this.hod = hod;
+        if (department == null) {
+            return DepartmentResponseDTO
+                    .builder()
+                    .build();
+        }
+        Long departmentId = department.getDepartmentId();
+        String departmentName = department.getDepartmentName();
+        String hod = department.getHod();
+
+        return DepartmentResponseDTO
+                .builder()
+                    .departmentId(departmentId)
+                    .departmentName(departmentName)
+                    .hod(hod)
+                .build();
     }
 }

@@ -9,9 +9,11 @@ public interface CourseService {
 
     Course getCourseById(Long id);
 
+    List<Course> getCoursesByIds(List<Long> ids);
+
     Course createCourse(Course course);
 
-    Course updateCourse(Long id, Course course);
+    Course updateCourse(Course course);
 
-    void deleteCourse(Long id);
+    Boolean deleteCourse(Long id);
 }

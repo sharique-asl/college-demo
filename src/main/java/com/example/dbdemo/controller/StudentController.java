@@ -1,100 +1,179 @@
 package com.example.dbdemo.controller;
 
+import com.example.dbdemo.dto.request.CreateStudentRequestDTO;
+import com.example.dbdemo.dto.request.ResponseDTOWrapper;
+import com.example.dbdemo.dto.request.UpdateStudentRequestDTO;
+import com.example.dbdemo.dto.response.StudentResponseDTO;
 import com.example.dbdemo.model.Student;
-import com.example.dbdemo.model.StudentDetails;
-import com.example.dbdemo.service.StudentDetailsService;
 import com.example.dbdemo.service.StudentService;
+import com.example.dbdemo.utilities.Gender;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
+@RequestMapping("/students")
 @Slf4j
 public class StudentController {
-    // Student CRUD operations
     @Autowired
     private StudentService studentService;
-    @Autowired
-    private StudentDetailsService studentDetailsService;
 
-    @GetMapping("/students")
-    public ResponseEntity<List<Student>> getAllStudents() {
-        List<Student> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
+    @PostMapping(value = "/getAllStudents", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getAllStudents(
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "gender", required = false) Gender gender,
+            @RequestParam(name = "sort", required = false) String sort
+    ) {
+        try {
+            if(sort == null)
+                sort = "id";
+            List<Student> students = studentService.getAllStudents(name, gender, sort);
+
+            List<StudentResponseDTO> studentsDTO = students
+                    .stream()
+                    .map(StudentResponseDTO::generateStudentResponseDTO)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<StudentResponseDTO>builder()
+                                    .items(studentsDTO)
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<StudentResponseDTO>builder()
+                                    .errorMessage("Fetching students was unsuccessful")
+                                    .build()
+                    );
+        }
     }
 
-    @GetMapping("/students/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+    @GetMapping(value = "/getStudentsByIds", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<StudentResponseDTO>> getStudentsByIds(@NotNull @RequestParam List<Long> id) {
+        try {
+            List<Student> students = studentService.getStudentsByIds(id);
 
-        Student student = studentService.getStudentById(id);
-        log.info(student.toString());
+            List<StudentResponseDTO> studentsDTOs = students
+                    .stream()
+                    .map(StudentResponseDTO::generateStudentResponseDTO)
+                    .collect(Collectors.toList());
 
-        return student != null ? ResponseEntity.ok(student) : ResponseEntity.notFound().build();
-    }
-//change requestParam , not getMapping , diff bw getMapping & PostMapping
-    @GetMapping("/students/ids")
-    public ResponseEntity<List<Student>> getStudentsByIds(@RequestParam List<Long> id) {
-        List<Student> students = studentService.getStudentsByIds(id);
-        return ResponseEntity.ok(students);
-    }
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<StudentResponseDTO>builder()
+                                    .items(studentsDTOs)
+                                    .build()
+                    );
 
-    @PostMapping("/students")
-    public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
-        Student createdStudent = studentService.createStudent(student);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
-    }
-    @PutMapping("/students/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
-        Student updatedStudent = studentService.updateStudent(id, student);
-        return updatedStudent != null ? ResponseEntity.ok(updatedStudent) : ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/students/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<StudentResponseDTO>builder()
+                                    .errorMessage("Unable to fetch students using IDs")
+                                    .build()
+                    );
+        }
     }
 
-    // StudentDetails CRUD operations
+    @PostMapping(value = "/createStudent", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
+        try {
+            Student createdStudent = studentService.createStudent(student.generateStudent());
 
-    @GetMapping("/studentDetails")
-    public ResponseEntity<List<StudentDetails>> getAllStudentDetails() {
-        List<StudentDetails> studentDetailsList = studentDetailsService.getAllStudentDetails();
-        return ResponseEntity.ok(studentDetailsList);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body("Success");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failure");
+        }
     }
 
-    @GetMapping("/studentDetails/{id}")
-    public ResponseEntity<StudentDetails> getStudentDetailsById(@PathVariable Long id) {
-        StudentDetails studentDetails = studentDetailsService.getStudentDetailsById(id);
-        return studentDetails != null ? ResponseEntity.ok(studentDetails) : ResponseEntity.notFound().build();
+    @PutMapping(value = "/updateStudent/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<String>> updateStudent(@Valid @RequestBody UpdateStudentRequestDTO student) {
+        try {
+            Student updatedStudent = studentService.updateStudent(student.generateStudent());
+
+            if (updatedStudent == null) {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(
+                                ResponseDTOWrapper.<String>builder()
+                                        .errorMessage("Student to be updated not found")
+                                        .build()
+                        );
+            }
+
+            StudentResponseDTO updatedStudentDTO = StudentResponseDTO.generateStudentResponseDTO(updatedStudent);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .items(Collections.singletonList("Student updated with id:" + updatedStudentDTO.getId()))
+                                    .build()
+                    );
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .errorMessage("Unable to update student")
+                                    .build()
+                    );
+        }
     }
 
-    @GetMapping("/studentDetails/ids")
-    public ResponseEntity<List<StudentDetails>> getStudentDetailsByIds(@RequestParam List<Long> id) {
-        List<StudentDetails> studentDetailsList = studentDetailsService.getStudentDetailsByIds(id);
-        return ResponseEntity.ok(studentDetailsList);
-    }
+    @DeleteMapping(value = "/deleteStudent/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTOWrapper<String>> deleteStudent(@NotNull @Min(1) @PathVariable Long id) {
+        try {
+            Boolean status = studentService.deleteStudent(id);
 
-    @PostMapping("/studentDetails")
-    public ResponseEntity<StudentDetails> createStudentDetails(@RequestBody StudentDetails studentDetails) {
-        StudentDetails createdStudentDetails = studentDetailsService.createStudentDetails(studentDetails);
-        return new ResponseEntity<>(createdStudentDetails, HttpStatus.CREATED);
-    }
+            return ResponseEntity
+                    .status(status ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .items(Collections.singletonList(status ? "Deletion successful" : "Deletion Failed"))
+                                    .build()
+                    );
 
-    @PutMapping("/studentDetails/{id}")
-    public ResponseEntity<StudentDetails> updateStudentDetails(@PathVariable Long id, @RequestBody StudentDetails studentDetails) {
-        StudentDetails updatedStudentDetails = studentDetailsService.updateStudentDetails(id, studentDetails);
-        return updatedStudentDetails != null ? ResponseEntity.ok(updatedStudentDetails) : ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ResponseDTOWrapper.<String>builder()
+                                    .errorMessage("Unable to delete entry")
+                                    .build()
+                    );
+        }
     }
-
-    @DeleteMapping("/studentDetails/{id}")
-    public ResponseEntity<Void> deleteStudentDetails(@PathVariable Long id) {
-        studentDetailsService.deleteStudentDetails(id);
-        return ResponseEntity.noContent().build();
-    }
-
 }
+

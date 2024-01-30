@@ -24,24 +24,36 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> getCoursesByIds(List<Long> ids) {
+        if (ids.isEmpty())
+            return courseRepository.findAll();
+
+        return courseRepository.findAllById(ids);
+    }
+
+    @Override
     public Course createCourse(Course course) {
         return courseRepository.save(course);
     }
 
     @Override
-    public Course updateCourse(Long id, Course course) {
+    public Course updateCourse(Course course) {
+        Long id = course.getCourseId();
         if (courseRepository.existsById(id)) {
             course.setCourseId(id);
             return courseRepository.save(course);
         } else {
-            // Handle the case where the course with the given ID does not exist.
-            // You might throw an exception or return a specific response.
             return null;
         }
     }
 
     @Override
-    public void deleteCourse(Long id) {
-        courseRepository.deleteById(id);
+    public Boolean deleteCourse(Long id) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if(course!=null){
+            courseRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

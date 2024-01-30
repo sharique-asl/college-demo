@@ -25,6 +25,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<Department> getDepartmentsByIds(List<Long> ids) {
+
+        if (ids.isEmpty())
+            return departmentRepository.findAll();
+
         return departmentRepository.findAllById(ids);
     }
 
@@ -34,19 +38,23 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department updateDepartment(Long id, Department department) {
+    public Department updateDepartment(Department department) {
+        Long id = department.getDepartmentId();
         if (departmentRepository.existsById(id)) {
             department.setDepartmentId(id);
             return departmentRepository.save(department);
         } else {
-            // Handle the case where the department with the given ID does not exist.
-            // You might throw an exception or return a specific response.
             return null;
         }
     }
 
     @Override
-    public void deleteDepartment(Long id) {
-        departmentRepository.deleteById(id);
+    public Boolean deleteDepartment(Long id) {
+        Department dept = departmentRepository.findById(id).orElse(null);
+        if(dept !=null){
+            departmentRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
